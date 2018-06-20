@@ -28,16 +28,17 @@
 				</select></td>
 			</tr>
 			<tr>
-				<td><label for="category">Category</label></td>
+			<td><label for="category">Category</label></td>
 				<td><select name="category">
-					<option value="Car">Car</option>
-					<option value="Entertainment">Entertainment</option>
-					<option value="Food">Food</option>
-				    <option value="Travel">Travel</option>
-					<option value="Shopping">Shopping</option>
-					<option value="Household">Household</option>
-					<option value="Overhead" selected="selected">Overhead</option>
-					<option value="Other">Other</option>
+				<?php
+				$query = "SELECT * FROM `payment_type` WHERE id_user='$user_id' ORDER BY ime ASC";
+				$result = $connection->query($query);
+				if($result->num_rows > 0){
+					while($row = $result->fetch_assoc()){
+						echo "<option value='".$row["ime"]."'>".$row["ime"]."</option>";
+					}
+				}
+				?>
 				</select></td>
 			</tr>
 			<tr>

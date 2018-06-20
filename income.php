@@ -30,9 +30,15 @@
 			<tr>
 				<td><label for="category">Category</label></td>
 				<td><select name="category">
-					<option value="Salary" selected="selected">Salary</option>
-					<option value="Income">Income</option>
-					<option value="Other">Other</option>
+				<?php
+					$query = "SELECT * FROM `income_type` WHERE id_user='$user_id' ORDER BY ime ASC";
+					$result = $connection->query($query);
+					if($result->num_rows > 0){
+						while($row = $result->fetch_assoc()){
+							echo "<option value='".$row["ime"]."'>".$row["ime"]."</option>";
+						}
+					}
+				?>
 				</select></td>
 			</tr>
 			<tr>

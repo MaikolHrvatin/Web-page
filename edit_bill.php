@@ -22,27 +22,27 @@
 						echo "<tr><td><label for='price'>Price</label></td>";
 						echo "<td><input type='text' name='price' value=".$row['iznos']."></td></tr>";
 						
-						//naci izmjenu da bude oznacen atocna valuta !!!
+						//naci izmjenu da bude oznacena tocna valuta !!!
 						echo "<tr><td><label for='currency'>Currency</label></td>
 							<td><select name='currency'>
 								<option value='HRK' selected='selected'>HRK</option>
 								<option value='EU'>EU</option>
 								<option value='USD'>USD</option>
 							</select></td></tr>";
-							
+						
+						//	OVAJ DIO OBAVEZNO PROMIJENITI
+						$bill_type = $row["vrsta"];
+						//	za sada prikazuje samo payment NE income					
 						echo "<tr><td><label for='category'>Category</label></td>";
-						echo "<td><select name='category'>
-								<option value='Auto'>Auto</option>
-								<option value='Zabava'>Zabava</option>
-								<option value='Prehrana'>Prehrana</option>
-								<option value='Putovanja'>Putovanja</option>
-								<option value='Trgovina'>Trgovina</option>
-								<option value='Kuća'>Kuća</option>
-								<option value='Režije' selected='selected'>Režije</option>
-								<option value='Plaća'>Plaća</option>
-								<option value='Uplate'>Uplate</option>
-								<option value='Ostali troškovi'>Ostali troškovi</option>
-							</select></td></tr>";
+						echo "<td><select name='category'>";
+							$query = "SELECT * FROM `payment_type` WHERE id_user=".$_SESSION['user_id']." ORDER BY ime ASC";
+							$result = $connection->query($query);
+							if($result->num_rows > 0){
+								while($row = $result->fetch_assoc()){
+									echo "<option value='".$row["ime"]."'>".$row["ime"]."</option>";
+								}
+							}
+						echo "</select></td></tr>";
 							
 						echo "<tr><td><label for='date'>Date<label></td>";
 						echo "<td><input type='date' name='date' value=".$row['datum']."></td></tr>";

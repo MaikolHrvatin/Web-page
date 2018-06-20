@@ -59,8 +59,35 @@
 			while($row = $result->fetch_assoc()){
 				$id = $row["id"];
 			}
-			$_SESSION["user_id"] = $id["id"];
+			$_SESSION["user_id"] = $id;
 			
+			//create new categories for bills
+			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Car', '$id')";
+			mysqli_query($connection, $query);
+			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Entertainment', '$id')";
+			mysqli_query($connection, $query);
+			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Food', '$id')";
+			mysqli_query($connection, $query);
+			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Travel', '$id')";
+			mysqli_query($connection, $query);
+			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Shopping', '$id')";
+			mysqli_query($connection, $query);
+			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Household', '$id')";
+			mysqli_query($connection, $query);
+			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Overhead', '$id')";
+			mysqli_query($connection, $query);
+			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Other', '$id')";
+			
+			//create new categories for income
+			mysqli_query($connection, $query);
+			$query = "INSERT INTO `income_type` (ime, id_user) VALUES ('Salary', '$id')";
+			mysqli_query($connection, $query);
+			$query = "INSERT INTO `income_type` (ime, id_user) VALUES ('Income', '$id')";
+			mysqli_query($connection, $query);
+			$query = "INSERT INTO `income_type` (ime, id_user) VALUES ('Other', '$id')";
+			mysqli_query($connection, $query);
+			
+			//go back to index
 			header('location: index.php');
 		}
 	}
