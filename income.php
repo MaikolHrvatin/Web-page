@@ -31,7 +31,7 @@
 				<td><label for="category">Category</label></td>
 				<td><select name="category">
 				<?php
-					$query = "SELECT * FROM `income_type` WHERE id_user='$user_id' ORDER BY ime ASC";
+					$query = "SELECT * FROM `bill_type` WHERE id_user='$user_id' AND category='Income' ORDER BY ime ASC";
 					$result = $connection->query($query);
 					if($result->num_rows > 0){
 						while($row = $result->fetch_assoc()){

@@ -33,7 +33,7 @@
 			$total_rows = mysqli_fetch_array($result_page)[0];
 			$total_pages = ceil($total_rows / $no_of_records_per_page);
 			
-			$query = "SELECT * FROM `racun` WHERE id_user='$user_id' ORDER BY 'datum' DESC LIMIT $offset, $no_of_records_per_page";
+			$query = "SELECT * FROM `racun` WHERE id_user='$user_id' ORDER BY 'datum' DESc LIMIT $offset, $no_of_records_per_page";
 			$result = $connection->query($query);
 			
 			// show each bill

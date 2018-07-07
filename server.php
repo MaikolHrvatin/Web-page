@@ -54,7 +54,7 @@
 			$_SESSION['username'] = $username;
 			$_SESSION['success'] = "Successful login";
 			//setting user_id for bills
-			$query = "SELECT * FROM `user` WHERE username='$username' and Password='$password'";
+			$query = "SELECT * FROM `user` WHERE username='$username'";
 			$result = $connection->query($query);
 			while($row = $result->fetch_assoc()){
 				$id = $row["id"];
@@ -62,29 +62,29 @@
 			$_SESSION["user_id"] = $id;
 			
 			//create new categories for bills
-			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Car', '$id')";
+			$query = "INSERT INTO `bill_type` (ime, id_user, category) VALUES ('Car', '$id', 'Expenses')";
 			mysqli_query($connection, $query);
-			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Entertainment', '$id')";
+			$query = "INSERT INTO `bill_type` (ime, id_user, category) VALUES ('Entertainment', '$id', 'Expenses')";
 			mysqli_query($connection, $query);
-			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Food', '$id')";
+			$query = "INSERT INTO `bill_type` (ime, id_user, category) VALUES ('Food', '$id', 'Expenses')";
 			mysqli_query($connection, $query);
-			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Travel', '$id')";
+			$query = "INSERT INTO `bill_type` (ime, id_user, category) VALUES ('Travel', '$id', 'Expenses')";
 			mysqli_query($connection, $query);
-			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Shopping', '$id')";
+			$query = "INSERT INTO `bill_type` (ime, id_user, category) VALUES ('Shopping', '$id', 'Expenses')";
 			mysqli_query($connection, $query);
-			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Household', '$id')";
+			$query = "INSERT INTO `bill_type` (ime, id_user, category) VALUES ('Household', '$id', 'Expenses')";
 			mysqli_query($connection, $query);
-			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Overhead', '$id')";
+			$query = "INSERT INTO `bill_type` (ime, id_user, category) VALUES ('Overhead', '$id', 'Expenses')";
 			mysqli_query($connection, $query);
-			$query = "INSERT INTO `payment_type` (ime, id_user) VALUES ('Other', '$id')";
+			$query = "INSERT INTO `bill_type` (ime, id_user, category) VALUES ('Other', '$id', 'Expenses')";
 			
 			//create new categories for income
 			mysqli_query($connection, $query);
-			$query = "INSERT INTO `income_type` (ime, id_user) VALUES ('Salary', '$id')";
+			$query = "INSERT INTO `bill_type` (ime, id_user, category) VALUES ('Salary', '$id', 'Income')";
 			mysqli_query($connection, $query);
-			$query = "INSERT INTO `income_type` (ime, id_user) VALUES ('Income', '$id')";
+			$query = "INSERT INTO `bill_type` (ime, id_user, category) VALUES ('Income', '$id', 'Income')";
 			mysqli_query($connection, $query);
-			$query = "INSERT INTO `income_type` (ime, id_user) VALUES ('Other', '$id')";
+			$query = "INSERT INTO `bill_type` (ime, id_user, category) VALUES ('Other', '$id', 'Income')";
 			mysqli_query($connection, $query);
 			
 			//go back to index
@@ -122,12 +122,12 @@
 				$_SESSION['success'] = "Successful login";
 				
 				// setting user_id for bills
-				$query = "SELECT * FROM `user` WHERE username='$username' and Password='$password'";
+				$query = "SELECT * FROM `user` WHERE username='$username'";
 				$result = $connection->query($query);
 				while($row = $result->fetch_assoc()){
 					$id = $row["id"];
 				}
-				$_SESSION["user_id"] = $id["id"];
+				$_SESSION["user_id"] = $id;
 				
 				header('location: index.php');
 			}else{

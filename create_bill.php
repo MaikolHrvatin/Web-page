@@ -22,8 +22,8 @@
 		$category = $_POST['category'];
 		$description = $_POST['description'];
 		$date = $_POST['date'];
-		if (isset($_POST['create_payment'])){$type = "expense";}
-		else {$type = "income";}
+		if (isset($_POST['create_payment'])){$type = "Expense";}
+		else {$type = "Income";}
 		
 		// check if price is empty
 		if(empty($price)){

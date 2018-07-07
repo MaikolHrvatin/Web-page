@@ -15,31 +15,39 @@
 			$query = "SELECT * FROM `racun` WHERE id='$bill_id'";
 			$result = $connection->query($query);
 			
-			if($result->num_rows > 0){
+			if($result->num_rows == 1){
 				while($row = $result->fetch_assoc()){
 					echo "<form method='post' action='edit_bill.php'>";
 					echo "<table>";
 						echo "<tr><td><label for='price'>Price</label></td>";
 						echo "<td><input type='text' name='price' value=".$row['iznos']."></td></tr>";
 						
-						//naci izmjenu da bude oznacena tocna valuta !!!
 						echo "<tr><td><label for='currency'>Currency</label></td>
 							<td><select name='currency'>
-								<option value='HRK' selected='selected'>HRK</option>
+								<option value=".$row['valuta']." selected='selected'>".$row['valuta']."</option>
+								<option value='HRK' >HRK</option>
 								<option value='EU'>EU</option>
 								<option value='USD'>USD</option>
 							</select></td></tr>";
 						
-						//	OVAJ DIO OBAVEZNO PROMIJENITI
-						$bill_type = $row["vrsta"];
-						//	za sada prikazuje samo payment NE income					
+						
+						$bill_type = $row["vrsta"];				
 						echo "<tr><td><label for='category'>Category</label></td>";
 						echo "<td><select name='category'>";
-							$query = "SELECT * FROM `payment_type` WHERE id_user=".$_SESSION['user_id']." ORDER BY ime ASC";
-							$result = $connection->query($query);
-							if($result->num_rows > 0){
-								while($row = $result->fetch_assoc()){
-									echo "<option value='".$row["ime"]."'>".$row["ime"]."</option>";
+							// old type
+							echo "<option value='".$row["kategorija"]."'>".$row["kategorija"]."</option>";
+							//other types
+							if($bill_type == 'expense'){
+								//	expenses
+								$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." AND category='Expenses' ORDER BY ime ASC";
+							}else{
+								//	income
+								$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." AND category='Income' ORDER BY ime ASC";
+							}
+							$result_type = $connection->query($query);
+							if($result_type->num_rows > 0){
+								while($row_type = $result_type->fetch_assoc()){
+									echo "<option value='".$row_type["ime"]."'>".$row_type["ime"]."</option>";
 								}
 							}
 						echo "</select></td></tr>";

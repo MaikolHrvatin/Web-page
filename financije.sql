@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 20, 2018 at 04:50 PM
+-- Generation Time: Jul 07, 2018 at 02:55 PM
 -- Server version: 5.7.20
 -- PHP Version: 7.1.11
 
@@ -25,23 +25,32 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `income_type`
+-- Table structure for table `bill_type`
 --
 
-CREATE TABLE `income_type` (
+CREATE TABLE `bill_type` (
   `ime` varchar(255) NOT NULL,
+  `id_user` int(50) NOT NULL,
   `id_type` int(50) NOT NULL,
-  `id_user` int(50) NOT NULL
+  `category` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `income_type`
+-- Dumping data for table `bill_type`
 --
 
-INSERT INTO `income_type` (`ime`, `id_type`, `id_user`) VALUES
-('Salary', 1, 13),
-('Income', 2, 13),
-('Other', 3, 13);
+INSERT INTO `bill_type` (`ime`, `id_user`, `id_type`, `category`) VALUES
+('Car', 1, 1, 'Expenses'),
+('Entertainment', 1, 2, 'Expenses'),
+('Food', 1, 3, 'Expenses'),
+('Travel', 1, 4, 'Expenses'),
+('Shopping', 1, 5, 'Expenses'),
+('Household', 1, 6, 'Expenses'),
+('Overhead', 1, 7, 'Expenses'),
+('Other', 1, 8, 'Expenses'),
+('Salary', 1, 9, 'Income'),
+('Income', 1, 10, 'Income'),
+('Other', 1, 11, 'Income');
 
 -- --------------------------------------------------------
 
@@ -52,32 +61,6 @@ INSERT INTO `income_type` (`ime`, `id_type`, `id_user`) VALUES
 CREATE TABLE `kucanstvo` (
   `id` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `payment_type`
---
-
-CREATE TABLE `payment_type` (
-  `ime` varchar(255) NOT NULL,
-  `id_user` int(50) NOT NULL,
-  `id_type` int(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `payment_type`
---
-
-INSERT INTO `payment_type` (`ime`, `id_user`, `id_type`) VALUES
-('Car', 13, 1),
-('Entertainment', 13, 2),
-('Food', 13, 3),
-('Travel', 13, 4),
-('Shopping', 13, 5),
-('Household', 13, 6),
-('Overhead', 13, 7),
-('Other', 13, 8);
 
 -- --------------------------------------------------------
 
@@ -101,7 +84,13 @@ CREATE TABLE `racun` (
 --
 
 INSERT INTO `racun` (`iznos`, `valuta`, `id`, `datum`, `kategorija`, `opis`, `vrsta`, `id_user`) VALUES
-(300, 'HRK', 1, '2018-06-13', 'Household', 'konzum', 'expense', 13);
+(25, 'HRK', 1, '2018-07-07', 'Car', 'test', 'Expense', 1),
+(23, 'HRK', 2, '2018-07-07', 'Salary', 'konzum', 'Income', 1),
+(1, 'HRK', 3, '2018-07-07', 'Car', '1', 'Expense', 1),
+(2, 'HRK', 4, '2018-07-07', 'Income', '2', 'Income', 1),
+(5, 'HRK', 5, '2018-07-06', 'Car', '5', 'Expense', 1),
+(4, 'HRK', 6, '2018-07-02', 'Car', '4', 'Expense', 1),
+(9, 'HRK', 7, '2018-07-03', 'Car', '9', 'Expense', 1);
 
 -- --------------------------------------------------------
 
@@ -121,7 +110,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`username`, `email`, `password`, `id`) VALUES
-('test', 'maikol@gmail.com', '202cb962ac59075b964b07152d234b70', 13);
+('test', 'maikol@gmail.com', '202cb962ac59075b964b07152d234b70', 1);
 
 -- --------------------------------------------------------
 
@@ -139,9 +128,9 @@ CREATE TABLE `user_kucanstvo` (
 --
 
 --
--- Indexes for table `income_type`
+-- Indexes for table `bill_type`
 --
-ALTER TABLE `income_type`
+ALTER TABLE `bill_type`
   ADD PRIMARY KEY (`id_type`),
   ADD KEY `id_user` (`id_user`);
 
@@ -150,13 +139,6 @@ ALTER TABLE `income_type`
 --
 ALTER TABLE `kucanstvo`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `payment_type`
---
-ALTER TABLE `payment_type`
-  ADD PRIMARY KEY (`id_type`),
-  ADD KEY `id_user` (`id_user`);
 
 --
 -- Indexes for table `racun`
@@ -183,39 +165,34 @@ ALTER TABLE `user_kucanstvo`
 --
 
 --
--- AUTO_INCREMENT for table `income_type`
+-- AUTO_INCREMENT for table `bill_type`
 --
-ALTER TABLE `income_type`
-  MODIFY `id_type` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `bill_type`
+  MODIFY `id_type` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `kucanstvo`
 --
 ALTER TABLE `kucanstvo`
   MODIFY `id` int(50) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `payment_type`
---
-ALTER TABLE `payment_type`
-  MODIFY `id_type` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
---
 -- AUTO_INCREMENT for table `racun`
 --
 ALTER TABLE `racun`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `payment_type`
+-- Constraints for table `bill_type`
 --
-ALTER TABLE `payment_type`
-  ADD CONSTRAINT `payment_type_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `bill_type`
+  ADD CONSTRAINT `bill_type_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `racun`
