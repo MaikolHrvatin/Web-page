@@ -37,7 +37,7 @@
 							// old type
 							echo "<option value='".$row["kategorija"]."'>".$row["kategorija"]."</option>";
 							//other types
-							if($bill_type == 'expense'){
+							if($bill_type == 'Expense'){
 								//	expenses
 								$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." AND category='Expenses' ORDER BY ime ASC";
 							}else{

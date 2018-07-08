@@ -20,7 +20,7 @@
 		<a href="income.php"><button type="button">New income</button></a>
 		<a href="show_bill.php"><button type="button">Account balance</button></a>
 		<a href=""><button type="button">Group balance</button></a>
-		<a href=""><button type="button">Edit bill categories</button></a>
+		<a href="edit_categories.php"><button type="button">Edit bill categories</button></a>
 		<a href="index.php?logout='1'"><button type="button">Logout</button></a>
 		
 	<?php else:?>	

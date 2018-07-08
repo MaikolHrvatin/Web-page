@@ -4,14 +4,13 @@
 	if (!$connection){
 	    die("Database Connection Failed" . mysqli_error($connection));
 	}
+	// Data for new bill
 	$bill_id = "";
-	
 	$price = "";
 	$currency = "";
 	$category = "";
 	$description = "";
 	$date = "";
-	$type = "";
 	$errors = array();
 		
 	if (isset($_POST['edit_bill'])){
@@ -24,13 +23,6 @@
 		$date = $_POST['date'];
 		$bill_id = $_POST['bill_id'];
 		
-		// check if income or expense
-		if($category == "Plaća" || $category == "Uplate"){
-			$type = "income";
-		}else{
-			$type = "expense";
-		}
-		
 		// check if price is empty
 		if(empty($price)){
 			array_push($errors, "Price is required");
@@ -38,8 +30,7 @@
 		
 		// check if there are no errors
 		if(count($errors) == 0){
-			echo "usao u if";
-			$query = "UPDATE `racun` SET iznos='$price', valuta='$currency', datum='$date', kategorija='$category', opis='$description', vrsta='$type' WHERE id='$bill_id'";
+			$query = "UPDATE `racun` SET iznos='$price', valuta='$currency', datum='$date', kategorija='$category', opis='$description' WHERE id='$bill_id'";
 			$rez = mysqli_query($connection, $query);
 			
 			header('location: show_bill.php');
