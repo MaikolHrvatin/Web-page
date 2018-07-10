@@ -3,6 +3,7 @@
 <html>
 <head>
 	<title>Delete bill</title>
+	<!-- frontend for deleting bills --!>
 </head>
 <body>
 	<!-- Logged user -->
@@ -10,7 +11,7 @@
 		<h3>Are you sure you want to delete the bill?</h3>
 		<?php
 			// search target bill
-			$bill_id = $_GET["id"];
+			$bill_id = $_POST["id"];
 			$query = "SELECT * FROM `racun` WHERE id='$bill_id'";
 			$result = $connection->query($query);
 			

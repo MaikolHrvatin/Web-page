@@ -1,4 +1,6 @@
 <?php
+	// main backend with user session
+	
 	// Connect to database
 	$connection = mysqli_connect('localhost', 'root', 'vertrigo', 'financije');
 	if (!$connection){

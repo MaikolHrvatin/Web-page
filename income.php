@@ -4,6 +4,7 @@
 <html>
 <head>
 	<title>Create bill</title>
+	<!-- frontend for adding new income bills --!>
 </head>
 <body>
 	<!-- Logged user -->

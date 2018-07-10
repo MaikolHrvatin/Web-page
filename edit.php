@@ -1,4 +1,6 @@
 <?php
+	// backend for editing bills
+	
 	// Connect to database
 	$connection = mysqli_connect('localhost', 'root', 'vertrigo', 'financije');
 	if (!$connection){

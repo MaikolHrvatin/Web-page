@@ -1,9 +1,10 @@
 <?php include('server.php'); ?>
-<?php include('bck_categories.php'); ?>
+<?php include('backend_categories.php'); ?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Edit bill categories</title>
+	<!-- frontend for adding new categories for bills --!>
 </head>
 <body>
 	<!-- Logged user -->
@@ -27,10 +28,10 @@
 			$result = $connection->query($query);
 			if($result->num_rows > 0){
 				while($row = $result->fetch_assoc()){
-					echo "<form method='post' action='edit_categories.php'>";
+					echo "<form method='post' action='del_categories.php'>";
 					echo "<label for=".$row['ime'].">".$row['ime']."</label>";
 					echo "<input type='hidden' name='category_id' value=".$row['id_type'].">";
-					echo "<input type='submit' name='new_expense' class='btn' value='Delete'>";
+					echo "<input type='submit' name='del_expense' class='btn' value='Delete'>";
 					echo "</form>";
 				}
 			}
@@ -50,10 +51,10 @@
 			$result = $connection->query($query);
 			if($result->num_rows > 0){
 				while($row = $result->fetch_assoc()){
-					echo "<form method='post' action='edit_categories.php'>";
+					echo "<form method='post' action='del_categories.php'>";
 					echo "<label for=".$row['ime'].">".$row['ime']."</label>";
 					echo "<input type='hidden' name='category_id' value=".$row['id_type'].">";
-					echo "<input type='submit' name='new_expense' class='btn' value='Delete'>";
+					echo "<input type='submit' name='del_income' class='btn' value='Delete'>";
 					echo "</form>";
 				}
 			}

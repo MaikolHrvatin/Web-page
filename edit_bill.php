@@ -4,6 +4,7 @@
 <html>
 <head>
 	<title>Edit bill</title>
+	<!-- frontend for editing old bills --!>
 </head>
 <body>
 	<!-- Logged user -->
@@ -11,7 +12,7 @@
 		<h3>Please edit the bill</h3>
 		<?php
 			// search target bill
-			$bill_id = $_GET["id"];
+			$bill_id = $_POST["id"];
 			$query = "SELECT * FROM `racun` WHERE id='$bill_id'";
 			$result = $connection->query($query);
 			

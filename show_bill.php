@@ -3,6 +3,7 @@
 <html>
 <head>
 	<title>All bills</title>
+	<!-- frontend showing all bills with pagination, deleting and editing bills --!>
 </head>
 <body>
 	<!-- After deleting or editing a bill -->
@@ -33,7 +34,7 @@
 			$total_rows = mysqli_fetch_array($result_page)[0];
 			$total_pages = ceil($total_rows / $no_of_records_per_page);
 			
-			$query = "SELECT * FROM `racun` WHERE id_user='$user_id' ORDER BY 'datum' DESc LIMIT $offset, $no_of_records_per_page";
+			$query = "SELECT * FROM `racun` WHERE id_user='$user_id' ORDER BY `datum` DESC LIMIT $offset, $no_of_records_per_page";
 			$result = $connection->query($query);
 			
 			// show each bill
@@ -43,9 +44,16 @@
 					echo $row["kategorija"]."<br>";
 					echo $row["datum"]."<br>";
 					echo $row["opis"]."<br>";
-					echo "<a href='edit_bill.php?id=".$row["id"]."'><button>Edit</button></a>"." ";
-					echo "<a href='delete_bill.php?id=".$row["id"]."'><button>Delete</button></a>";
-					echo "<br>";
+					// edit bill
+					echo "<form method='post' action='edit_bill.php'>";
+					echo "<input type='hidden' name='id' value=".$row['id'].">";
+					echo "<input type='submit' name='edit_b' class='btn' value='Edit'>";
+					echo "</form>";
+					// delete bill
+					echo "<form method='post' action='delete_bill.php'>";
+					echo "<input type='hidden' name='id' value=".$row['id'].">";
+					echo "<input type='submit' name='delete_b' class='btn' value='Delete'>";
+					echo "</form>";
 				}
 			}
 		?>
