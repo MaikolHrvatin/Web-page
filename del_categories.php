@@ -4,7 +4,7 @@
 <html>
 <head>
 	<title>Delete category</title>
-	<!-- frontend for deleting categories --!>
+	<!-- frontend for deleting categories -->
 </head>
 <body>
 	<!-- Logged user -->

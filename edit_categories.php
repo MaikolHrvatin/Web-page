@@ -4,66 +4,124 @@
 <html>
 <head>
 	<title>Edit bill categories</title>
-	<!-- frontend for adding new categories for bills --!>
+	<!-- frontend for adding new categories for bills -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link href="navbar-fixed-top.css" rel="stylesheet">
 </head>
 <body>
-	<!-- Logged user -->
-	<?php if(isset($_SESSION['username'])): ?>
-		<h3>Please edit your bill categories</h3>
+
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<p class="navbar-brand">Finances</p>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a href="index.php">Home page</a></li>
+				<li><a href="show_bill.php">Acount balance</a></li>
+				<li><a href="">Group balance</a></li>
+				<li class="dropdown">
+					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">New payment <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="payment.php">Expense</a></li>
+						<li class="active"><a href="income.php">Income</a></li>
+					</ul>
+				</li>
+				<li class="dropdown active">
+					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Edit <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li class="active"><a href="edit_categories.php">Bill categories</a></li>
+						<li><a href="">Placeholder</a></li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<!-- Logged user -->
+				<?php if(isset($_SESSION['username'])): ?>
+					<li class="active"><a href="index.php?logout='1'">Logout</a></li>
+				<!-- Not logged user, go to register/login -->
+				<?php else:?>	
+					<li class="active"><a href="login.php">Login</a></li>
+					<li><a href="register.php">Register</a></li>
+				<?php endif ?>
+			</ul>
+		</div>
+		</div>
+    </nav>
+	
+	<div class="container">
+		<div class="jumbotron">
 		
-		<!-- validation errors -->
-		<?php include('validators.php'); ?>
+			<!-- Logged user -->
+			<?php if(isset($_SESSION['username'])): ?>
+			<h2>Please edit your bill categories</h2><br>
 		
-		<p>Expenses</p>
-		<form method='post' action='edit_categories.php'>
-			<label for="category">New expense category</label>
-			<!-- Add new category -->
-			<input type="text" name="category">
-			<input type='hidden' name="type" value="Expenses">
-			<button type="submit" name="new_expense_category" class="btn">Create</button>
-		</form>
-		<?php
-			// Show all expenses, and delete selected
-			$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." AND category='Expenses'";
-			$result = $connection->query($query);
-			if($result->num_rows > 0){
-				while($row = $result->fetch_assoc()){
-					echo "<form method='post' action='del_categories.php'>";
-					echo "<label for=".$row['ime'].">".$row['ime']."</label>";
-					echo "<input type='hidden' name='category_id' value=".$row['id_type'].">";
-					echo "<input type='submit' name='del_expense' class='btn' value='Delete'>";
-					echo "</form>";
+			<!-- validation errors -->
+			<?php include('validators.php'); ?>
+			
+			<p>Expenses</p>
+			<form method='post' action='edit_categories.php'>
+				<label for="category">New expense category</label>
+				<!-- Add new category -->
+				<input type="text" name="category">
+				<input type='hidden' name="type" value="Expenses">
+				<button type="submit" name="new_expense_category" class="btn">Create</button>
+			</form>
+			<?php
+				// Show all expenses, and delete selected
+				$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." AND category='Expenses'";
+				$result = $connection->query($query);
+				if($result->num_rows > 0){
+					while($row = $result->fetch_assoc()){
+						echo "<form method='post' action='del_categories.php'>";
+						echo "<label for=".$row['ime'].">".$row['ime']."</label>";
+						echo "<input type='hidden' name='category_id' value=".$row['id_type'].">";
+						echo "<input type='submit' name='del_expense' class='btn' value='Delete'>";
+						echo "</form>";
+					}
 				}
-			}
-		?>
-		
-		<p>Income</p>
-		<form method='post' action='edit_categories.php'>
-			<label for="category">New income category</label>
-			<!-- Add new category -->
-			<input type="text" name="category">
-			<input type='hidden' name="type" value="Income">
-			<button type="submit" name="new_income_category" class="btn">Create</button>
-		</form>
-		<?php
-			// Show all income, and delete selected
-			$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." AND category='Income'";
-			$result = $connection->query($query);
-			if($result->num_rows > 0){
-				while($row = $result->fetch_assoc()){
-					echo "<form method='post' action='del_categories.php'>";
-					echo "<label for=".$row['ime'].">".$row['ime']."</label>";
-					echo "<input type='hidden' name='category_id' value=".$row['id_type'].">";
-					echo "<input type='submit' name='del_income' class='btn' value='Delete'>";
-					echo "</form>";
+			?>
+			
+			<p>Income</p>
+			<form method='post' action='edit_categories.php'>
+				<label for="category">New income category</label>
+				<!-- Add new category -->
+				<input type="text" name="category">
+				<input type='hidden' name="type" value="Income">
+				<button type="submit" name="new_income_category" class="btn">Create</button>
+			</form>
+			<?php
+				// Show all income, and delete selected
+				$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." AND category='Income'";
+				$result = $connection->query($query);
+				if($result->num_rows > 0){
+					while($row = $result->fetch_assoc()){
+						echo "<form method='post' action='del_categories.php'>";
+						echo "<label for=".$row['ime'].">".$row['ime']."</label>";
+						echo "<input type='hidden' name='category_id' value=".$row['id_type'].">";
+						echo "<input type='submit' name='del_income' class='btn' value='Delete'>";
+						echo "</form>";
+					}
 				}
-			}
-		?>
-		</br><a href='index.php'><button>Back</button></a>
-	<?php else:?>	
-	<!-- Not logged user, go to register/login -->
-		<a href="login.php"><button type="button">Login</button></a>
-		<a href="register.php"><button type="button">Register</button></a>
-	<?php endif ?>	
+			?>
+				
+			<?php else:?>	
+			<!-- Not logged user, go to register/login -->
+				<p>Please login or register</p>
+			<?php endif ?>
+		</div>
+	</div>
+		
 </body>
 </html>
