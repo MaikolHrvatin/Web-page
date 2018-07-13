@@ -70,50 +70,60 @@
 			<!-- validation errors -->
 			<?php include('validators.php'); ?>
 			
-			<p>Expenses</p>
+			<h3>Expenses</h3>
 			<form method='post' action='edit_categories.php'>
 				<label for="category">New expense category</label>
 				<!-- Add new category -->
-				<input type="text" name="category">
+				<input class='form-control' type="text" name="category">
 				<input type='hidden' name="type" value="Expenses">
-				<button type="submit" name="new_expense_category" class="btn">Create</button>
+				<button class='btn btn-lg btn-primary' type="submit" name="new_expense_category">Create</button>
 			</form>
+			<br>
 			<?php
 				// Show all expenses, and delete selected
-				$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." AND category='Expenses'";
-				$result = $connection->query($query);
-				if($result->num_rows > 0){
-					while($row = $result->fetch_assoc()){
-						echo "<form method='post' action='del_categories.php'>";
-						echo "<label for=".$row['ime'].">".$row['ime']."</label>";
-						echo "<input type='hidden' name='category_id' value=".$row['id_type'].">";
-						echo "<input type='submit' name='del_expense' class='btn' value='Delete'>";
-						echo "</form>";
+				echo "<table class='table table-striped table-condensed'>";
+				
+					$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." AND category='Expenses'";
+					$result = $connection->query($query);
+					if($result->num_rows > 0){
+						while($row = $result->fetch_assoc()){
+							echo "<tr><form method='post' action='del_categories.php'>";
+								echo "<td><label for=".$row['ime'].">".$row['ime']."</label></td>";
+								echo "<td><input type='hidden' name='category_id' value=".$row['id_type'].">";
+								echo "<input type='submit' name='del_expense' class='btn' value='Delete'></td>";
+							echo "</form></tr>";
+						}
 					}
-				}
+					
+				echo "</table>";
 			?>
 			
-			<p>Income</p>
+			<h3>Income</h3>
 			<form method='post' action='edit_categories.php'>
 				<label for="category">New income category</label>
 				<!-- Add new category -->
-				<input type="text" name="category">
+				<input class='form-control' type="text" name="category">
 				<input type='hidden' name="type" value="Income">
-				<button type="submit" name="new_income_category" class="btn">Create</button>
+				<button class='btn btn-lg btn-primary' type="submit" name="new_income_category">Create</button>
 			</form>
+			<br>
 			<?php
 				// Show all income, and delete selected
-				$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." AND category='Income'";
-				$result = $connection->query($query);
-				if($result->num_rows > 0){
-					while($row = $result->fetch_assoc()){
-						echo "<form method='post' action='del_categories.php'>";
-						echo "<label for=".$row['ime'].">".$row['ime']."</label>";
-						echo "<input type='hidden' name='category_id' value=".$row['id_type'].">";
-						echo "<input type='submit' name='del_income' class='btn' value='Delete'>";
-						echo "</form>";
+				echo "<table class='table table-striped table-condensed'>";
+				
+					$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." AND category='Income'";
+					$result = $connection->query($query);
+					if($result->num_rows > 0){
+						while($row = $result->fetch_assoc()){
+							echo "<tr><form method='post' action='del_categories.php'>";
+								echo "<td><label for=".$row['ime'].">".$row['ime']."</label></td>";
+								echo "<td><input type='hidden' name='category_id' value=".$row['id_type'].">";
+								echo "<input type='submit' name='del_income' class='btn' value='Delete'></td>";
+							echo "</form></tr>";
+						}
 					}
-				}
+				
+				echo "</table>";
 			?>
 				
 			<?php else:?>	

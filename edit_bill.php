@@ -78,10 +78,10 @@
 						echo "<form method='post' action='edit_bill.php'>";
 						echo "<table class='table table-condensed'>";
 							echo "<tr><td><label for='price'>Price</label></td>";
-							echo "<td><input type='text' name='price' value=".$row['iznos']."></td></tr>";
+							echo "<td><input class='form-control' type='text' name='price' value=".$row['iznos']."></td></tr>";
 							
 							echo "<tr><td><label for='currency'>Currency</label></td>
-								<td><select name='currency'>
+								<td><select class='form-control' name='currency'>
 									<option value=".$row['valuta']." selected='selected'>".$row['valuta']."</option>
 									<option value='HRK' >HRK</option>
 									<option value='EU'>EU</option>
@@ -91,7 +91,7 @@
 							
 							$bill_type = $row["vrsta"];				
 							echo "<tr><td><label for='category'>Category</label></td>";
-							echo "<td><select name='category'>";
+							echo "<td><select class='form-control' name='category'>";
 								// old type
 								echo "<option value='".$row["kategorija"]."'>".$row["kategorija"]."</option>";
 								//other types
@@ -111,10 +111,10 @@
 							echo "</select></td></tr>";
 								
 							echo "<tr><td><label for='date'>Date<label></td>";
-							echo "<td><input type='date' name='date' value=".$row['datum']."></td></tr>";
+							echo "<td><input class='form-control' type='date' name='date' value=".$row['datum']."></td></tr>";
 							
 							echo "<tr><td><label for='description'>Description</label></td>";
-							echo "<td><input type='text' name='description' value=".$row['opis']."></td></tr>";
+							echo "<td><input class='form-control' type='text' name='description' value=".$row['opis']."></td></tr>";
 							
 							//hidden input type
 							echo "<tr><td><input type='hidden' name='bill_id' value=".$bill_id.">";
