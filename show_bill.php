@@ -75,6 +75,12 @@
 			<?php
 				$user_id = $_SESSION["user_id"];
 				
+				// search form
+				echo "<form name='search_form' action='show_bill.php' method='POST'>";
+					echo "<input type='text' name='term'>";
+					echo "<input type='submit' name='search_bill' value='Search'>";
+				echo "</form>";
+				
 				// PAGINATION
 				// current page number
 				if (isset($_GET['page_no'])) {
@@ -90,50 +96,14 @@
 				$result_page = mysqli_query($connection,$total_pages_sql);
 				$total_rows = mysqli_fetch_array($result_page)[0];
 				$total_pages = ceil($total_rows / $no_of_records_per_page);
-				
+				/*
 				$query = "SELECT * FROM `racun` WHERE id_user='$user_id' ORDER BY `datum` DESC LIMIT $offset, $no_of_records_per_page";
 				$result = $connection->query($query);
-				
-				// show each bill
-				if($result->num_rows > 0){
-					echo "<table class='table table-striped table-condensed'><thead><tr>";
-						echo "<th>Price</th>";
-						echo "<th>Valute</th>";
-						echo "<th>Category</th>";
-						echo "<th>Date</th>";
-						echo "<th>Info</th>";
-						echo "<th></th>";
-						echo "<th></th>";
-					echo "</tr></thead>";
-					echo "<tbody>";
-					
-					while($row = $result->fetch_assoc()){
-						echo "<tr>";
-							echo "<td>".$row["iznos"]."</td>";
-							echo "<td>".$row["valuta"]."</td>";
-							echo "<td>".$row["kategorija"]."</td>";
-							echo "<td>".$row["datum"]."</td>";
-							echo "<td>".$row["opis"]."</td>";
-							// edit bill
-							echo "<td>";
-							echo "<form method='post' action='edit_bill.php'>";
-							echo "<input type='hidden' name='id' value=".$row['id'].">";
-							echo "<input type='submit' name='edit_b' class='btn' value='Edit'>";
-							echo "</form>";
-							echo "</td>";
-							// delete bill
-							echo "<td>";
-							echo "<form method='post' action='delete_bill.php'>";
-							echo "<input type='hidden' name='id' value=".$row['id'].">";
-							echo "<input type='submit' name='delete_b' class='btn' value='Delete'>";
-							echo "</form>";
-							echo "</td>";
-						echo "</tr>";
-					}
-					echo "</tbody>";
-					echo "</table>";
-				}
+				*/
 			?>
+			
+			<?php include('search.php'); // search bills ?>
+			
 			<ul class="pagination">
 				<li><a href="?page_no=1">First</a></li>
 				<li class="<?php if($page_no <= 1){ echo 'disabled'; } ?>">
