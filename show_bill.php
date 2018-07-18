@@ -72,48 +72,21 @@
 				unset($_SESSION['success']);
 			endif ?>
 			
-			<?php
-				$user_id = $_SESSION["user_id"];
+			<?php if (isset($_GET['page_no'])) {
+				$page_no = $_GET['page_no'];
+			} else {
+				$page_no = 1;
+			} ?>
+		
+			<!-- Search form -->
+			<form name='search_form' action='show_bill.php' method='POST'>
+				<input type='text' name='term' value="<?php if(isset($_POST['term'])) {echo $_POST['term'];} ?>">
 				
-				// search form
-				echo "<form name='search_form' action='show_bill.php' method='POST'>";
-					echo "<input type='text' name='term'>";
-					echo "<input type='submit' name='search_bill' value='Search'>";
-				echo "</form>";
-				
-				// PAGINATION
-				// current page number
-				if (isset($_GET['page_no'])) {
-					$page_no = $_GET['page_no'];
-				} else {
-					$page_no = 1;
-				}
-				// bills per page
-				$no_of_records_per_page = 10;
-				$offset = ($page_no-1)*$no_of_records_per_page;
-				// number of total pages
-				$total_pages_sql = "SELECT COUNT(*) FROM `racun` WHERE id_user='$user_id'";
-				$result_page = mysqli_query($connection,$total_pages_sql);
-				$total_rows = mysqli_fetch_array($result_page)[0];
-				$total_pages = ceil($total_rows / $no_of_records_per_page);
-				/*
-				$query = "SELECT * FROM `racun` WHERE id_user='$user_id' ORDER BY `datum` DESC LIMIT $offset, $no_of_records_per_page";
-				$result = $connection->query($query);
-				*/
-			?>
+				<input type='hidden' name='page_no' value=<?php echo $page_no; ?>>
+				<input type='submit' name='search_bill' value='Search'>
+			</form>
 			
 			<?php include('search.php'); // search bills ?>
-			
-			<ul class="pagination">
-				<li><a href="?page_no=1">First</a></li>
-				<li class="<?php if($page_no <= 1){ echo 'disabled'; } ?>">
-					<a href="<?php if($page_no <= 1){ echo '#'; } else { echo "?page_no=".($page_no - 1); } ?>">Prev</a>
-				</li>
-				<li class="<?php if($page_no >= $total_pages){ echo 'disabled'; } ?>">
-					<a href="<?php if($page_no >= $total_pages){ echo '#'; } else { echo "?page_no=".($page_no + 1); } ?>">Next</a>
-				</li>
-				<li><a href="?page_no=<?php echo $total_pages; ?>">Last</a></li>
-			</ul>
 				
 			<?php else:?>
 			<!-- Not logged user, go to register/login -->
