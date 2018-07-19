@@ -71,21 +71,51 @@
 				echo $_SESSION['success'];
 				unset($_SESSION['success']);
 			endif ?>
-			
-			<?php if (isset($_GET['page_no'])) {
-				$page_no = $_GET['page_no'];
-			} else {
-				$page_no = 1;
-			} ?>
 		
 			<!-- Search form -->
-			<form name='search_form' action='show_bill.php' method='POST'>
-				<input type='text' name='term' value="<?php if(isset($_POST['term'])) {echo $_POST['term'];} ?>">
+			<p>Search form</p>
+			<form name='search_form' action='show_bill.php' method='GET'>
+				<!-- If empty page number is one -->
+				<input type='hidden' name='page_no' value=<?php echo isset($_GET['page_no']) ? $_GET['page_no'] : 1; ?>>
+				<!-- After _get text in input is saved -->
+				<input type='text' name='term' class="form-control" placeholder="Input search term" value="<?php if(!empty($_GET['term'])) {echo $_GET['term'];} ?>">
+				<select name="category" class="form-control">
+					<option value="">Select category</option>
+					<?php
+						$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." ORDER BY category ASC";
+						$result = $connection->query($query);
+						if($result->num_rows > 0){
+							while($row = $result->fetch_assoc()){
+								if(!empty($_GET['category'])){
+									if($row['ime'] == $_GET['category']){
+										echo "<option value='".$row["ime"]."' selected>".$row["ime"]."</option>";
+									}
+								}else{
+									echo "<option value='".$row["ime"]."'>".$row["ime"]."</option>";
+								}
+							}
+						}
+					?>
+				</select>
 				
-				<input type='hidden' name='page_no' value=<?php echo $page_no; ?>>
-				<input type='submit' name='search_bill' value='Search'>
+				<input type='text' name='max_val' class="form-control" placeholder="Input highest price" value="<?php if(!empty($_GET['max_val'])) {echo $_GET['max_val'];} ?>">
+				<input type='text' name='min_val' class="form-control" placeholder="input lowest price" value="<?php if(!empty($_GET['min_val'])) {echo $_GET['min_val'];} ?>">
+				<select name="currency" class="form-control">
+					<?php $flag = !empty($_GET['currency']) ? $_GET['currency'] : ''?>
+					<option value="">Select currency</option>
+					<option value="HRK" <?php if($flag == 'HRK') echo 'selected';?> >HRK</option>
+					<option value="EU" <?php if($flag == 'EU') echo 'selected';?> >EU</option>
+					<option value="USD" <?php if($flag == 'USD') echo 'selected';?> >USD</option>
+				</select>
+				
+				<input class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" name="max_date" placeholder="Input latest date" value="<?php if(!empty($_GET['max_date'])) {echo $_GET['max_date'];} ?>">
+				<input class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" name="min_date" placeholder="Input earliest date" value="<?php if(!empty($_GET['min_date'])) {echo $_GET['min_date'];} ?>">
+
+				<input type='submit' class="btn btn-lg btn-primary" value='Search'>
 			</form>
+			<br>
 			
+			<p>All bills</p>
 			<?php include('search.php'); // search bills ?>
 				
 			<?php else:?>
