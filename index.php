@@ -65,12 +65,15 @@
 			<!-- Logged user -->
 			<?php if(isset($_SESSION['username'])): ?>
 			<h1>Home page</h1>
+			<h2>All expenses and income, shown in HRK</h2>
 			
 			<!-- After login -->
 			<?php if(isset($_SESSION['success'])):
 				echo "<p class='alert alert-success'>".$_SESSION['success']."</p>";
 				unset($_SESSION['success']);
 			endif ?>
+			
+			<?php include('make_piechart.php'); ?>
 				
 			<?php else:?>	
 			<!-- Not logged user, go to register/login -->

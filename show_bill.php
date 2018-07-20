@@ -64,7 +64,7 @@
 		
 			<!-- Logged user -->
 			<?php if(isset($_SESSION['username'])): ?>
-			<h2>Most recent bills</h2>
+			<h2>All bills sorted by date</h2>
 			
 			<!-- After deleting or editing a bill -->
 			<?php if(isset($_SESSION['success'])):
