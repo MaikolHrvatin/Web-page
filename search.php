@@ -10,6 +10,7 @@
 	// Data for the search
 	$user_id = $_SESSION["user_id"];
 	$search_term = isset($_GET['term']) ? $_GET['term'] : '';
+	$bill_type = isset($_GET['bill_type']) ? $_GET['bill_type'] : '';
 	$category = isset($_GET['category']) ? $_GET['category'] : '';
 	$max_date = isset($_GET['max_date']) ? $_GET['max_date'] : '';
 	$min_date = isset($_GET['min_date']) ? $_GET['min_date'] : '';
@@ -25,6 +26,11 @@
 	if(!empty($_GET['term'])){
 		$link = $link."&term=".$search_term;
 	}
+	if(!empty($_GET['bill_type'])){
+		$link = $link."&bill_type=".$bill_type;
+		$query_count = $query_count." AND vrsta='".$bill_type."'";
+		$query_search = $query_search." AND vrsta='".$bill_type."'";
+	}
 	if(!empty($_GET['category'])){
 		$link = $link."&category=".$category;
 		$query_count = $query_count." AND kategorija='".$category."'";
@@ -36,22 +42,22 @@
 		$query_search = $query_search." AND datum<='".$max_date."'";
 	}
 	if(!empty($_GET['min_date'])){
-		$link = $link."&min_date=".$category;
+		$link = $link."&min_date=".$min_date;
 		$query_count = $query_count." AND datum>='".$min_date."'";
 		$query_search = $query_search." AND datum>='".$min_date."'";
 	}
 	if(!empty($_GET['max_val'])){
-		$link = $link."&max_val=".$category;
+		$link = $link."&max_val=".$max_val;
 		$query_count = $query_count." AND iznos<='".$max_val."'";
 		$query_search = $query_search." AND iznos<='".$max_val."'";
 	}
 	if(!empty($_GET['min_val'])){
-		$link = $link."&min_val=".$category;
+		$link = $link."&min_val=".$min_val;
 		$query_count = $query_count." AND iznos>='".$min_val."'";
 		$query_search = $query_search." AND iznos>='".$min_val."'";
 	}
 	if(!empty($_GET['currency'])){
-		$link = $link."&currency=".$category;
+		$link = $link."&currency=".$currency;
 		$query_count = $query_count." AND valuta='".$currency."'";
 		$query_search = $query_search." AND valuta='".$currency."'";
 	}
@@ -93,7 +99,13 @@
 	
 	if($rez->num_rows > 0){
 		while($row = $rez->fetch_assoc()){
-			echo "<tr><td>".$row["iznos"]."</td>";
+			echo "<tr><td>";
+			if($row['vrsta'] == 'Income'){
+				echo "+ ";
+			}else{
+				echo "- ";
+			}
+			echo $row["iznos"]."</td>";
 			echo "<td>".$row["valuta"]."</td>";
 			echo "<td>".$row["kategorija"]."</td>";
 			echo "<td>".$row["datum"]."</td>";

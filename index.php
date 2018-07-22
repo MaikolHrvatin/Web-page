@@ -1,5 +1,4 @@
 <?php include('server.php'); ?>
-<?php include('logout.php');?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,7 +47,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<!-- Logged user -->
 				<?php if(isset($_SESSION['username'])): ?>
-					<li class="active"><a href="index.php?logout='1'">Logout</a></li>
+					<li class="active"><a href="logout.php">Logout</a></li>
 				<!-- Not logged user, go to register/login -->
 				<?php else:?>	
 					<li class="active"><a href="login.php">Login</a></li>
@@ -65,13 +64,14 @@
 			<!-- Logged user -->
 			<?php if(isset($_SESSION['username'])): ?>
 			<h1>Home page</h1>
-			<h2>All expenses and income, shown in HRK</h2>
 			
 			<!-- After login -->
 			<?php if(isset($_SESSION['success'])):
 				echo "<p class='alert alert-success'>".$_SESSION['success']."</p>";
 				unset($_SESSION['success']);
 			endif ?>
+			
+			<h2>All expenses and income, shown in HRK</h2>
 			
 			<?php include('make_piechart.php'); ?>
 				

@@ -48,7 +48,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<!-- Logged user -->
 				<?php if(isset($_SESSION['username'])): ?>
-					<li class="active"><a href="index.php?logout='1'">Logout</a></li>
+					<li class="active"><a href="logout.php">Logout</a></li>
 				<!-- Not logged user, go to register/login -->
 				<?php else:?>	
 					<li class="active"><a href="login.php">Login</a></li>

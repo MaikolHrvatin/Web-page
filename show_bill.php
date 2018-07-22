@@ -48,7 +48,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<!-- Logged user -->
 				<?php if(isset($_SESSION['username'])): ?>
-					<li class="active"><a href="index.php?logout='1'">Logout</a></li>
+					<li class="active"><a href="logout.php">Logout</a></li>
 				<!-- Not logged user, go to register/login -->
 				<?php else:?>	
 					<li class="active"><a href="login.php">Login</a></li>
@@ -79,27 +79,60 @@
 				<input type='hidden' name='page_no' value=<?php echo isset($_GET['page_no']) ? $_GET['page_no'] : 1; ?>>
 				<!-- After _get text in input is saved -->
 				<input type='text' name='term' class="form-control" placeholder="Input search term" value="<?php if(!empty($_GET['term'])) {echo $_GET['term'];} ?>">
-				<select name="category" class="form-control">
+				
+				<!-- Selecting bill type, expenses or income -->
+				<select name="bill_type" id="bill_type" class="form-control">
+					<?php $flag = !empty($_GET['bill_type']) ? $_GET['bill_type'] : ''?>
+					<option value="">Select bill type</option>
+					<option value="Expense" <?php if($flag == 'Expense') echo 'selected';?> >Expense</option>
+					<option value="Income" <?php if($flag == 'Income') echo 'selected';?> >Income</option>
+				</select>
+				
+				<!-- Javascript to change dropbox below -->
+				<script type="text/javascript">
+				$('#bill_type').on('change', function(){
+					if( $(this).val() == 'Expense'){
+						$('.bill_income').hide();
+						$('.bill_expenses').show();
+					} else if( $(this).val() == 'Income'){
+						$('.bill_expenses').hide();
+						$('.bill_income').show();
+					} else {
+						$('.bill_expenses').show();
+						$('.bill_income').show();
+					}
+				});
+				</script>
+				
+				<select name="category" id="category" class="form-control">
 					<option value="">Select category</option>
 					<?php
-						$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." ORDER BY category ASC";
+						$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." ORDER BY `category`, `ime`";
 						$result = $connection->query($query);
 						if($result->num_rows > 0){
 							while($row = $result->fetch_assoc()){
 								if(!empty($_GET['category'])){
 									if($row['ime'] == $_GET['category']){
-										echo "<option value='".$row["ime"]."' selected>".$row["ime"]."</option>";
+										if($row['category'] == 'Expenses'){
+											echo "<option class='bill_expenses' value='".$row["ime"]."' selected>".$row["ime"]."</option>";
+										}else if($row['category'] == 'Income'){
+											echo "<option class='bill_income' value='".$row["ime"]."' selected>".$row["ime"]."</option>";
+										}
 									}
 								}else{
-									echo "<option value='".$row["ime"]."'>".$row["ime"]."</option>";
+									if($row['category'] == 'Expenses'){
+										echo "<option class='bill_expenses' value='".$row["ime"]."'>".$row["ime"]."</option>";
+									}else if($row['category'] == 'Income'){
+										echo "<option class='bill_income' value='".$row["ime"]."'>".$row["ime"]."</option>";
+									}
 								}
 							}
 						}
 					?>
 				</select>
 				
-				<input type='text' name='max_val' class="form-control" placeholder="Input highest price" value="<?php if(!empty($_GET['max_val'])) {echo $_GET['max_val'];} ?>">
-				<input type='text' name='min_val' class="form-control" placeholder="input lowest price" value="<?php if(!empty($_GET['min_val'])) {echo $_GET['min_val'];} ?>">
+				<input type='text' name='max_val' class="form-control" placeholder="Input highest price (ignore +/-)" value="<?php if(!empty($_GET['max_val'])) {echo $_GET['max_val'];} ?>">
+				<input type='text' name='min_val' class="form-control" placeholder="input lowest price (ignore +/-)" value="<?php if(!empty($_GET['min_val'])) {echo $_GET['min_val'];} ?>">
 				<select name="currency" class="form-control">
 					<?php $flag = !empty($_GET['currency']) ? $_GET['currency'] : ''?>
 					<option value="">Select currency</option>
