@@ -118,6 +118,12 @@
 										}else if($row['category'] == 'Income'){
 											echo "<option class='bill_income' value='".$row["ime"]."' selected>".$row["ime"]."</option>";
 										}
+									}else{
+										if($row['category'] == 'Expenses'){
+											echo "<option class='bill_expenses' value='".$row["ime"]."'>".$row["ime"]."</option>";
+										}else if($row['category'] == 'Income'){
+											echo "<option class='bill_income' value='".$row["ime"]."'>".$row["ime"]."</option>";
+										}
 									}
 								}else{
 									if($row['category'] == 'Expenses'){
