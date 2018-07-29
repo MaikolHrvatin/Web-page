@@ -12,7 +12,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<link href="navbar-fixed-top.css" rel="stylesheet">
 </head>
-<body>
+<body onload="load_function()">
 
     <nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
@@ -29,7 +29,14 @@
 			<ul class="nav navbar-nav">
 				<li><a href="index.php">Home page</a></li>
 				<li class="active"><a href="show_bill.php">Acount balance</a></li>
-				<li><a href="">Group balance</a></li>
+				<li class="dropdown">
+					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Group finances <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="new_group.php">New group</a></li>
+						<li><a href="edit_groups.php">Edit groups</a></li>
+						<li><a href="">Group bills</a></li>
+					</ul>
+				</li>
 				<li class="dropdown">
 					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">New payment <span class="caret"></span></a>
 					<ul class="dropdown-menu">
@@ -68,7 +75,7 @@
 			
 			<!-- After deleting or editing a bill -->
 			<?php if(isset($_SESSION['success'])):
-				echo $_SESSION['success'];
+				echo "<p class='alert alert-success'>".$_SESSION['success']."</p>";
 				unset($_SESSION['success']);
 			endif ?>
 		
@@ -102,6 +109,19 @@
 						$('.bill_income').show();
 					}
 				});
+				
+				function load_function(){
+					if( $('#bill_type').val() == 'Expense'){
+						$('.bill_income').hide();
+						$('.bill_expenses').show();
+					} else if( $('#bill_type').val() == 'Income'){
+						$('.bill_expenses').hide();
+						$('.bill_income').show();
+					} else {
+						$('.bill_expenses').show();
+						$('.bill_income').show();
+					}
+				}
 				</script>
 				
 				<select name="category" id="category" class="form-control">

@@ -35,6 +35,7 @@
 			$query = "UPDATE `racun` SET iznos='$price', valuta='$currency', datum='$date', kategorija='$category', opis='$description' WHERE id='$bill_id'";
 			$rez = mysqli_query($connection, $query);
 			
+			$_SESSION['success'] = "Edit was successful";
 			header('location: show_bill.php');
 		}
 	}

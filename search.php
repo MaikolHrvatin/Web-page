@@ -20,8 +20,8 @@
 	
 	// making sql query and link to new page
 	$link = "";
-	$query_count = "SELECT COUNT(*) FROM `racun` WHERE id_user='$user_id' AND (`opis` LIKE '%".$search_term."%' OR `kategorija` LIKE '%".$search_term."%')"; //nema zagrade, treba dodat
-	$query_search = "SELECT * FROM `racun` WHERE id_user='$user_id' AND (`opis` LIKE '%".$search_term."%' OR `kategorija` LIKE '%".$search_term."%')";
+	$query_count = "SELECT COUNT(*) FROM `racun` WHERE id_user='$user_id' AND (`opis` LIKE '%".$search_term."%' OR `kategorija` LIKE '%".$search_term."%') AND grupa_id IS NULL";
+	$query_search = "SELECT * FROM `racun` WHERE id_user='$user_id' AND (`opis` LIKE '%".$search_term."%' OR `kategorija` LIKE '%".$search_term."%') AND grupa_id IS NULL";
 	
 	if(!empty($_GET['term'])){
 		$link = $link."&term=".$search_term;

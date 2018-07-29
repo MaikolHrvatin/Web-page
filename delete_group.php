@@ -1,10 +1,9 @@
 <?php include('server.php'); ?>
-<?php include('backend_categories.php'); ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Delete category</title>
-	<!-- frontend for deleting categories -->
+	<title>Delete bill</title>
+	<!-- frontend for deleting groups -->
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +14,7 @@
 </head>
 <body>
 
-	<nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -30,11 +29,11 @@
 			<ul class="nav navbar-nav">
 				<li><a href="index.php">Home page</a></li>
 				<li><a href="show_bill.php">Acount balance</a></li>
-				<li class="dropdown">
+				<li class="dropdown active">
 					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Group finances <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="new_group.php">New group</a></li>
-						<li><a href="edit_groups.php">Edit groups</a></li>
+						<li class="active"><a href="edit_groups.php">Edit groups</a></li>
 						<li><a href="">Group bills</a></li>
 					</ul>
 				</li>
@@ -56,7 +55,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<!-- Logged user -->
 				<?php if(isset($_SESSION['username'])): ?>
-					<li class="active"><a href="index.php?logout='1'">Logout</a></li>
+					<li class="active"><a href="logout.php">Logout</a></li>
 				<!-- Not logged user, go to register/login -->
 				<?php else:?>	
 					<li class="active"><a href="login.php">Login</a></li>
@@ -72,17 +71,24 @@
 		
 			<!-- Logged user -->
 			<?php if(isset($_SESSION['username'])): ?>
-			<h2>Are you sure you want to logout?</h2><br>
+			<h2>Are you sure you want to delete the group?</h2><br>
 			
-			<!-- Logout code -->
-			<?php if(isset($_GET['logout'])): ?>
-				<?php session_destroy(); ?>
-				<?php unset($_SESSION['username']); ?>
-				<?php header('location: index.php'); ?>
-			<?php endif ?>
-		
-			<!-- Logout button -->
-			<a class='btn btn-lg btn-primary' href="logout.php?logout='1'">Logout</a>
+			<?php
+				// search target bill
+				$group_id = $_POST["id"];
+				$query = "SELECT * FROM `grupe` WHERE id='$group_id'";
+				$result = $connection->query($query);
+				
+				if($result->num_rows > 0){
+					while($row = $result->fetch_assoc()){
+						echo "<p>Name: ".$row["ime"]."<br>";
+						echo "Date: ".$row["date_start"]."<br>";
+						echo "Info: ".$row["info"]."</p>";
+						echo "<a class='btn btn-lg btn-primary' href='delete_group_back.php?id=".$group_id."'>Delete</a>"." ";
+						echo "<a class='btn btn-lg btn-default' href='edit_groups.php'>Back</a>";
+					}
+				}
+			?>	
 				
 			<?php else:?>	
 			<!-- Not logged user, go to register/login -->
@@ -90,6 +96,6 @@
 			<?php endif ?>
 		</div>
 	</div>
-
+	
 </body>
 </html>

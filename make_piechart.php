@@ -17,7 +17,7 @@
 	$USD_to_HRK = 6.314;
 	
 	// Data for first piechart, expenses & income ratio
-	$query_ratio = "SELECT * FROM `racun` WHERE id_user='$user_id'";
+	$query_ratio = "SELECT * FROM `racun` WHERE id_user='$user_id' AND grupa_id IS NULL";
 	$result = $connection->query($query_ratio);
 	if($result->num_rows > 0){
 		while($row = $result->fetch_assoc()){
@@ -40,7 +40,7 @@
 	
 	// Data for second piechart, all expenses
 	//creating categories
-	$query_expenses = "SELECT DISTINCT kategorija FROM `racun` WHERE id_user='$user_id' AND vrsta='Expense'";
+	$query_expenses = "SELECT DISTINCT kategorija FROM `racun` WHERE id_user='$user_id' AND vrsta='Expense' AND grupa_id IS NULL";
 	$result = $connection->query($query_expenses);
 	if($result->num_rows > 0){
 		while($row = $result->fetch_assoc()){
@@ -49,7 +49,7 @@
 	}
 	//geting data
 	$array_length = count($expenses_chart);
-	$query_expenses = "SELECT * FROM `racun` WHERE id_user='$user_id' AND vrsta='Expense'";
+	$query_expenses = "SELECT * FROM `racun` WHERE id_user='$user_id' AND vrsta='Expense' AND grupa_id IS NULL";
 	$result = $connection->query($query_expenses);
 	if($result->num_rows > 0){
 		while($row = $result->fetch_assoc()){
@@ -72,7 +72,7 @@
 	
 	// Data for third piechart, all incomes
 	//creating categories
-	$query_income = "SELECT DISTINCT kategorija FROM `racun` WHERE id_user='$user_id' AND vrsta='Income'";
+	$query_income = "SELECT DISTINCT kategorija FROM `racun` WHERE id_user='$user_id' AND vrsta='Income' AND grupa_id IS NULL";
 	$result = $connection->query($query_income);
 	if($result->num_rows > 0){
 		while($row = $result->fetch_assoc()){
@@ -81,7 +81,7 @@
 	}
 	//geting data
 	$array_length = count($income_chart);
-	$query_income = "SELECT * FROM `racun` WHERE id_user='$user_id' AND vrsta='Income'";
+	$query_income = "SELECT * FROM `racun` WHERE id_user='$user_id' AND vrsta='Income' AND grupa_id IS NULL";
 	$result = $connection->query($query_income);
 	if($result->num_rows > 0){
 		while($row = $result->fetch_assoc()){

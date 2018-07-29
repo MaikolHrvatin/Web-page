@@ -3,7 +3,7 @@
 <html>
 <head>
 	<title>Edit bill categories</title>
-	<!-- frontend for adding new categories for bills -->
+	<!-- frontend for editing and deleting groups -->
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,11 +29,11 @@
 			<ul class="nav navbar-nav">
 				<li><a href="index.php">Home page</a></li>
 				<li><a href="show_bill.php">Acount balance</a></li>
-				<li class="dropdown">
+				<li class="dropdown active">
 					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Group finances <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="new_group.php">New group</a></li>
-						<li><a href="edit_groups.php">Edit groups</a></li>
+						<li class="active"><a href="edit_groups.php">Edit groups</a></li>
 						<li><a href="">Group bills</a></li>
 					</ul>
 				</li>
@@ -44,10 +44,10 @@
 						<li><a href="income.php">Income</a></li>
 					</ul>
 				</li>
-				<li class="dropdown active">
+				<li class="dropdown">
 					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Edit <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li class="active"><a href="edit_categories.php">Bill categories</a></li>
+						<li><a href="edit_categories.php">Bill categories</a></li>
 						<li><a href="">Placeholder</a></li>
 					</ul>
 				</li>
@@ -58,7 +58,7 @@
 					<li class="active"><a href="logout.php">Logout</a></li>
 				<!-- Not logged user, go to register/login -->
 				<?php else:?>	
-					<li class="active"><a href="login.php">Login</a></li>
+					<li><a href="login.php">Login</a></li>
 					<li><a href="register.php">Register</a></li>
 				<?php endif ?>
 			</ul>
@@ -71,65 +71,69 @@
 		
 			<!-- Logged user -->
 			<?php if(isset($_SESSION['username'])): ?>
-			<?php include('backend_categories.php'); ?>
-			<h2>Please edit your bill categories</h2><br>
-		
-			<!-- validation errors -->
-			<?php include('validators.php'); ?>
+			<h2>Browse and edit your groups</h2><br>
 			
-			<h3>Expenses</h3>
-			<form method='post' action='edit_categories.php'>
-				<label for="category">New expense category</label>
-				<!-- Add new category -->
-				<input class='form-control' type="text" name="category">
-				<input type='hidden' name="type" value="Expenses">
-				<button class='btn btn-lg btn-primary' type="submit" name="new_expense_category">Create</button>
-			</form>
-			<br>
+			<!-- After deleting or editing a group -->
+			<?php if(isset($_SESSION['success'])):
+				echo "<p class='alert alert-success'>".$_SESSION['success']."</p>";
+				unset($_SESSION['success']);
+			endif ?>
+			
 			<?php
-				// Show all expenses, and delete selected
-				echo "<table class='table table-striped table-condensed'>";
+				// Show all groups, and edit
 				
-					$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." AND category='Expenses'";
+				// groups where admin
+				echo "<h3>Groups where administrator</h3>";
+				echo "<table class='table table-striped table-condensed'>";
+					$query = "SELECT * FROM `grupe` WHERE admin_id=".$_SESSION['user_id']."";
 					$result = $connection->query($query);
 					if($result->num_rows > 0){
 						while($row = $result->fetch_assoc()){
-							echo "<tr><form method='post' action='del_categories.php'>";
-								echo "<td><label for=".$row['ime'].">".$row['ime']."</label></td>";
-								echo "<td><input type='hidden' name='category_id' value=".$row['id_type'].">";
-								echo "<input type='submit' name='del_expense' class='btn' value='Delete'></td>";
-							echo "</form></tr>";
+							echo "<tr>";
+							echo "<td><label for=".$row['ime'].">".$row['ime']."</label></td>";
+							echo "<td><label for=".$row['date_start'].">".$row['date_start']."</label></td>";
+							
+							// add and remove members
+							echo "<td><form method='post' action='edit_group_users.php'>";
+								echo "<input type='hidden' name='id' value=".$row['id'].">";
+								echo "<input type='submit' name='edit_members' class='btn' value='Members'></td>";
+							echo "</form></td>";
+							
+							// edit group
+							echo "<td><form method='post' action='edit_group.php'>";
+								echo "<input type='hidden' name='id' value=".$row['id'].">";
+								echo "<input type='submit' name='edit_groups' class='btn' value='Edit'></td>";
+							echo "</form></td>";
+							
+							// delete group
+							echo "<td><form method='post' action='delete_group.php'>";
+								echo "<input type='hidden' name='id' value=".$row['id'].">";
+								echo "<input type='submit' name='delete_b' class='btn' value='Delete'>";
+							echo "</form></td>";
+							echo "</tr>";
 						}
 					}
-					
 				echo "</table>";
-			?>
-			
-			<h3>Income</h3>
-			<form method='post' action='edit_categories.php'>
-				<label for="category">New income category</label>
-				<!-- Add new category -->
-				<input class='form-control' type="text" name="category">
-				<input type='hidden' name="type" value="Income">
-				<button class='btn btn-lg btn-primary' type="submit" name="new_income_category">Create</button>
-			</form>
-			<br>
-			<?php
-				// Show all income, and delete selected
-				echo "<table class='table table-striped table-condensed'>";
 				
-					$query = "SELECT * FROM `bill_type` WHERE id_user=".$_SESSION['user_id']." AND category='Income'";
+				// other groups
+				echo "<h3>Other groups</h3>";
+				echo "<table class='table table-striped table-condensed'>";
+					$query = "SELECT grupe.ime, grupe.id, date_start FROM `grupe` INNER JOIN `user_grupe` ON grupe.id=id_grupa INNER JOIN `user` ON user.id=id_user WHERE user.id=".$_SESSION['user_id'].""; //tu stao
 					$result = $connection->query($query);
 					if($result->num_rows > 0){
 						while($row = $result->fetch_assoc()){
-							echo "<tr><form method='post' action='del_categories.php'>";
+							echo "<tr>";
 								echo "<td><label for=".$row['ime'].">".$row['ime']."</label></td>";
-								echo "<td><input type='hidden' name='category_id' value=".$row['id_type'].">";
-								echo "<input type='submit' name='del_income' class='btn' value='Delete'></td>";
-							echo "</form></tr>";
+								echo "<td><label for=".$row['date_start'].">".$row['date_start']."</label></td>";
+								
+								// browse members, no edit alowed !!!
+								echo "<td><form method='post' action='edit_group_users.php'>";
+									echo "<input type='hidden' name='id' value=".$row['id'].">";
+									echo "<input type='submit' name='edit_members' class='btn' value='Members'></td>";
+								echo "</form></td>";
+							echo "</tr>";
 						}
 					}
-				
 				echo "</table>";
 			?>
 				

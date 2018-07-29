@@ -37,6 +37,7 @@
 			$query = "INSERT INTO `racun` (iznos, valuta, datum, kategorija, opis, vrsta, id_user) VALUES ('$price', '$currency', '$date', '$category', '$description', '$type', '$user_id')";
 			mysqli_query($connection, $query);
 			
+			$_SESSION['success'] = "The bill was created successfully";
 			header('location: show_bill.php');
 		}
 	}

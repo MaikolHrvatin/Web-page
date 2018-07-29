@@ -1,10 +1,10 @@
 <?php include('server.php'); ?>
-<?php include('backend_categories.php'); ?>
+<?php include('edit_group_back.php'); ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Delete category</title>
-	<!-- frontend for deleting categories -->
+	<title>Edit bill</title>
+	<!-- frontend for editing groups -->
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,17 +24,17 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<p class="navbar-brand">Finances</p>
+			<a class="navbar-brand" href="">Finances</a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<li><a href="index.php">Home page</a></li>
 				<li><a href="show_bill.php">Acount balance</a></li>
-				<li class="dropdown">
+				<li class="dropdown active">
 					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Group finances <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="new_group.php">New group</a></li>
-						<li><a href="edit_groups.php">Edit groups</a></li>
+						<li class="active"><a href="edit_groups.php">Edit groups</a></li>
 						<li><a href="">Group bills</a></li>
 					</ul>
 				</li>
@@ -56,7 +56,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<!-- Logged user -->
 				<?php if(isset($_SESSION['username'])): ?>
-					<li class="active"><a href="index.php?logout='1'">Logout</a></li>
+					<li class="active"><a href="logout.php">Logout</a></li>
 				<!-- Not logged user, go to register/login -->
 				<?php else:?>	
 					<li class="active"><a href="login.php">Login</a></li>
@@ -72,17 +72,38 @@
 		
 			<!-- Logged user -->
 			<?php if(isset($_SESSION['username'])): ?>
-			<h2>Are you sure you want to logout?</h2><br>
+			<h2>Please edit your group</h2><br>
 			
-			<!-- Logout code -->
-			<?php if(isset($_GET['logout'])): ?>
-				<?php session_destroy(); ?>
-				<?php unset($_SESSION['username']); ?>
-				<?php header('location: index.php'); ?>
-			<?php endif ?>
-		
-			<!-- Logout button -->
-			<a class='btn btn-lg btn-primary' href="logout.php?logout='1'">Logout</a>
+			<!-- validation errors -->
+			<?php include('validators.php'); ?>
+			
+			<?php
+				// search target bill
+				$group_id = $_POST["id"];
+				$query = "SELECT * FROM `grupe` WHERE id='$group_id'";
+				$result = $connection->query($query);
+				
+				if($result->num_rows == 1){
+					while($row = $result->fetch_assoc()){
+						echo "<form method='post' action='edit_group.php'>";
+						echo "<table class='table table-condensed'>";
+							echo "<tr><td><label for='name'>Name</label></td>";
+							echo "<td><input class='form-control' type='text' name='name' value=".$row['ime']." required></td></tr>";
+	
+							echo "<tr><td><label for='date'>Date created</label></td>";
+							echo "<td><label for='date'>".$row['date_start']."</label></td></tr>";
+							
+							echo "<tr><td><label for='info'>Description</label></td>";
+							echo "<td><input class='form-control' type='text' name='info' value='".$row['info']."' required></td></tr>";
+							
+							//hidden input type
+							echo "<tr><td><input type='hidden' name='group_id' value=".$group_id.">";
+							echo "<input class='btn btn-lg btn-primary' type='submit' name='edit_group' value='Edit'></td>";
+							echo "<td><a class='btn btn-lg btn-default' href='edit_groups.php'>Back</a></td></tr>";
+						echo "</tr></table></form>";
+					}
+				}
+			?>	
 				
 			<?php else:?>	
 			<!-- Not logged user, go to register/login -->
@@ -90,6 +111,6 @@
 			<?php endif ?>
 		</div>
 	</div>
-
+	
 </body>
 </html>

@@ -30,7 +30,14 @@
 			<ul class="nav navbar-nav">
 				<li><a href="index.php">Home page</a></li>
 				<li class="active"><a href="show_bill.php">Acount balance</a></li>
-				<li><a href="">Group balance</a></li>
+				<li class="dropdown">
+					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Group finances <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="new_group.php">New group</a></li>
+						<li><a href="edit_groups.php">Edit groups</a></li>
+						<li><a href="">Group bills</a></li>
+					</ul>
+				</li>
 				<li class="dropdown">
 					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">New payment <span class="caret"></span></a>
 					<ul class="dropdown-menu">
@@ -78,7 +85,7 @@
 						echo "<form method='post' action='edit_bill.php'>";
 						echo "<table class='table table-condensed'>";
 							echo "<tr><td><label for='price'>Price</label></td>";
-							echo "<td><input class='form-control' type='text' name='price' value=".$row['iznos']."></td></tr>";
+							echo "<td><input class='form-control' type='text' name='price' value=".$row['iznos']." required></td></tr>";
 							
 							echo "<tr><td><label for='currency'>Currency</label></td>
 								<td><select class='form-control' name='currency'>
@@ -114,7 +121,7 @@
 							echo "<td><input class='form-control' type='date' name='date' value=".$row['datum']."></td></tr>";
 							
 							echo "<tr><td><label for='description'>Description</label></td>";
-							echo "<td><input class='form-control' type='text' name='description' value=".$row['opis']."></td></tr>";
+							echo "<td><input class='form-control' type='text' name='description' value='".$row['opis']."'></td></tr>";
 							
 							//hidden input type
 							echo "<tr><td><input type='hidden' name='bill_id' value=".$bill_id.">";

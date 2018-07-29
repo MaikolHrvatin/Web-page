@@ -1,3 +1,4 @@
+<?php include('server.php'); ?>
 <?php
 	// backend for deleting bills
 	
@@ -12,7 +13,7 @@
 	
 	if (mysqli_query($connection, $query)){
 		$_SESSION['success'] = "The bill was deleted successfully";
-		header('Location: show_bill.php');
+		header('location: show_bill.php');
 		exit;
 	} else {
 		echo "Error deleting";
