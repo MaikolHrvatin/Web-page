@@ -33,7 +33,6 @@
 			$rez = mysqli_query($connection, $query);
 			
 			$_SESSION['success'] = "Edit was successful";
-			header('location: edit_groups.php');
 		}
 	}
 ?>

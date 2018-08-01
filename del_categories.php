@@ -35,7 +35,7 @@
 					<ul class="dropdown-menu">
 						<li><a href="new_group.php">New group</a></li>
 						<li><a href="edit_groups.php">Edit groups</a></li>
-						<li><a href="">Group bills</a></li>
+						<li><a href="group_bills.php">Group bills</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">
@@ -86,7 +86,7 @@
 						echo "<form method='post' action='del_categories.php'>";
 						echo "<input type='hidden' name='category_id' value=".$row['id_type'].">";
 						echo "<input class='btn btn-lg btn-primary' type='submit' name='del_category' value='Delete'>";
-						echo "<a class='btn btn-lg btn-default' href='edit_categories.php'>Back</a>";
+						echo "<button class='btn btn-lg btn-default' onclick='window.history.go(-1); return false;'>Back</button>";
 						echo "</form>";
 					}
 				}

@@ -34,7 +34,7 @@
 					<ul class="dropdown-menu">
 						<li><a href="new_group.php">New group</a></li>
 						<li class="active"><a href="edit_groups.php">Edit groups</a></li>
-						<li><a href="">Group bills</a></li>
+						<li><a href="group_bills.php">Group bills</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">
@@ -95,13 +95,13 @@
 							
 							// add and remove members
 							echo "<td><form method='post' action='edit_group_users.php'>";
-								echo "<input type='hidden' name='id' value=".$row['id'].">";
+								echo "<input type='hidden' name='group_id' value=".$row['id'].">";
 								echo "<input type='submit' name='edit_members' class='btn' value='Members'></td>";
 							echo "</form></td>";
 							
 							// edit group
 							echo "<td><form method='post' action='edit_group.php'>";
-								echo "<input type='hidden' name='id' value=".$row['id'].">";
+								echo "<input type='hidden' name='group_id' value=".$row['id'].">";
 								echo "<input type='submit' name='edit_groups' class='btn' value='Edit'></td>";
 							echo "</form></td>";
 							
@@ -128,7 +128,7 @@
 								
 								// browse members, no edit alowed !!!
 								echo "<td><form method='post' action='edit_group_users.php'>";
-									echo "<input type='hidden' name='id' value=".$row['id'].">";
+									echo "<input type='hidden' name='group_id' value=".$row['id'].">";
 									echo "<input type='submit' name='edit_members' class='btn' value='Members'></td>";
 								echo "</form></td>";
 							echo "</tr>";

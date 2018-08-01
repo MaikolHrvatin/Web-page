@@ -34,7 +34,7 @@
 					<ul class="dropdown-menu">
 						<li><a href="new_group.php">New group</a></li>
 						<li><a href="edit_groups.php">Edit groups</a></li>
-						<li><a href="">Group bills</a></li>
+						<li><a href="group_bills.php">Group bills</a></li>
 					</ul>
 				</li>
 				<li class="dropdown active">
@@ -74,6 +74,12 @@
 			<?php include('create_bill.php'); ?>
 			<h2>Create a new expense payment</h2><br>
 			
+			<!-- After deleting or editing a bill -->
+			<?php if(isset($_SESSION['success'])):
+				echo "<p class='alert alert-success'>".$_SESSION['success']."</p>";
+				unset($_SESSION['success']);
+			endif ?>
+			
 			<!-- validation errors -->
 			<?php include('validators.php'); ?>
 		
@@ -112,6 +118,32 @@
 					<tr>
 						<td><label for="description">Description</label></td>
 						<td><input class="form-control" type="text" name="description"></td>
+					</tr>
+					<!-- Chose group -->
+					<tr>
+						<td><label for="group">Chose group</label></td>
+						<td><select class="form-control" name="group">
+							<option value="">No group - private bill</option>
+							<?php
+								//admin groups
+								$query = "SELECT * FROM `grupe` WHERE admin_id=".$_SESSION['user_id']." ORDER BY ime ASC";
+								$result = $connection->query($query);
+								if($result->num_rows > 0){
+									while($row = $result->fetch_assoc()){
+										echo "<option value='".$row["id"]."'>".$row["ime"]."</option>";
+									}
+								}
+								
+								//other groups
+								$query = "SELECT * FROM `grupe` INNER JOIN `user_grupe` ON grupe.id=id_grupa WHERE id_user=".$_SESSION['user_id']." ORDER BY ime ASC";
+								$result = $connection->query($query);
+								if($result->num_rows > 0){
+									while($row = $result->fetch_assoc()){
+										echo "<option value='".$row["id"]."'>".$row["ime"]."</option>";
+									}
+								}
+							?>
+						</select></td>
 					</tr>
 					<tr>
 						<td colspan="2"><button type="submit" name="create_payment" class="btn btn-lg btn-primary">Create</button></td>

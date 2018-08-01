@@ -28,13 +28,13 @@
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<li><a href="index.php">Home page</a></li>
-				<li class="active"><a href="show_bill.php">Acount balance</a></li>
-				<li class="dropdown">
+				<li><a href="show_bill.php">Acount balance</a></li>
+				<li class="dropdown active">
 					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Group finances <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="new_group.php">New group</a></li>
 						<li><a href="edit_groups.php">Edit groups</a></li>
-						<li><a href="group_bills.php">Group bills</a></li>
+						<li class="active"><a href="group_bills.php">Group bills</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">
@@ -58,7 +58,7 @@
 					<li class="active"><a href="logout.php">Logout</a></li>
 				<!-- Not logged user, go to register/login -->
 				<?php else:?>	
-					<li class="active"><a href="login.php">Login</a></li>
+					<li><a href="login.php">Login</a></li>
 					<li><a href="register.php">Register</a></li>
 				<?php endif ?>
 			</ul>
@@ -71,17 +71,22 @@
 		
 			<!-- Logged user -->
 			<?php if(isset($_SESSION['username'])): ?>
-			<h2>All private bills sorted by date</h2>
-			
-			<!-- After deleting or editing a bill -->
-			<?php if(isset($_SESSION['success'])):
-				echo "<p class='alert alert-success'>".$_SESSION['success']."</p>";
-				unset($_SESSION['success']);
-			endif ?>
+			<?php
+				$group_id = $_GET["group_id"];
+				$query = "SELECT * FROM `grupe` WHERE id='$group_id'";
+				$result = $connection->query($query);
+				
+				if($result->num_rows == 1){
+					while($row = $result->fetch_assoc()){
+						echo "<h2>Group: ".$row['ime']."</h2>";
+					}
+				}
+			?>
+			<h3>Browse all bills</h3>
 		
 			<!-- Search form -->
 			<p>Search form</p>
-			<form name='search_form' action='show_bill.php' method='GET'>
+			<form name='search_form' action='show_group_bills.php' method='GET'>
 				<!-- If empty page number is one -->
 				<input type='hidden' name='page_no' value=<?php echo isset($_GET['page_no']) ? $_GET['page_no'] : 1; ?>>
 				<!-- After _get text in input is saved -->
@@ -170,7 +175,7 @@
 				<input class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" name="max_date" placeholder="Input latest date" value="<?php if(!empty($_GET['max_date'])) {echo $_GET['max_date'];} ?>">
 				<input class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" name="min_date" placeholder="Input earliest date" value="<?php if(!empty($_GET['min_date'])) {echo $_GET['min_date'];} ?>">
 
-				<input type='hidden' name="group_id" value="">
+				<input type='hidden' name="group_id" value="<?php echo $group_id;?>">
 				<input type='submit' class="btn btn-lg btn-primary" value='Search'>
 			</form>
 			<br>

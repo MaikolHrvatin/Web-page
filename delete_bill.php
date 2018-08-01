@@ -29,7 +29,14 @@
 			<ul class="nav navbar-nav">
 				<li><a href="index.php">Home page</a></li>
 				<li class="active"><a href="show_bill.php">Acount balance</a></li>
-				<li><a href="">Group balance</a></li>
+				<li class="dropdown">
+					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Group finances <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="new_group.php">New group</a></li>
+						<li><a href="edit_groups.php">Edit groups</a></li>
+						<li><a href="group_bills.php">Group bills</a></li>
+					</ul>
+				</li>
 				<li class="dropdown">
 					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">New payment <span class="caret"></span></a>
 					<ul class="dropdown-menu">
@@ -79,7 +86,7 @@
 						echo "Date: ".$row["datum"]."<br>";
 						echo "Info: ".$row["opis"]."</p>";
 						echo "<a class='btn btn-lg btn-primary' href='delete.php?id=".$bill_id."'>Delete</a>"." ";
-						echo "<a class='btn btn-lg btn-default' href='show_bill.php'>Back</a>";
+						echo "<td><button class='btn btn-lg btn-default' onclick='window.history.go(-1); return false;'>Back</button></td></tr>";
 					}
 				}
 			?>	

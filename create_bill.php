@@ -12,6 +12,7 @@
 	$category = "";
 	$description = "";
 	$date = "";
+	$group = "";
 	$type = ""; //income-expense
 	$user_id = $_SESSION["user_id"];
 	$errors = array();
@@ -24,6 +25,7 @@
 		$category = $_POST['category'];
 		$description = $_POST['description'];
 		$date = $_POST['date'];
+		$group = !empty($_POST['group']) ? "'".$_POST['group']."'" : "NULL";
 		if (isset($_POST['create_payment'])){$type = "Expense";}
 		else {$type = "Income";}
 		
@@ -34,11 +36,12 @@
 		
 		// check if there are no errors
 		if(count($errors) == 0){
-			$query = "INSERT INTO `racun` (iznos, valuta, datum, kategorija, opis, vrsta, id_user) VALUES ('$price', '$currency', '$date', '$category', '$description', '$type', '$user_id')";
+			$query = "INSERT INTO `racun` (iznos, valuta, datum, kategorija, opis, vrsta, id_user, grupa_id) VALUES ('$price', '$currency', '$date', '$category', '$description', '$type', '$user_id', $group)";
 			mysqli_query($connection, $query);
 			
-			$_SESSION['success'] = "The bill was created successfully";
-			header('location: show_bill.php');
+			$_SESSION['success'] = $query."The bill was created successfully";
+			//old path after success
+			//header('location: show_bill.php');
 		}
 	}
 ?>

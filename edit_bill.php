@@ -29,13 +29,13 @@
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<li><a href="index.php">Home page</a></li>
-				<li class="active"><a href="show_bill.php">Acount balance</a></li>
+				<li><a href="show_bill.php">Acount balance</a></li>
 				<li class="dropdown">
 					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Group finances <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="new_group.php">New group</a></li>
 						<li><a href="edit_groups.php">Edit groups</a></li>
-						<li><a href="">Group bills</a></li>
+						<li><a href="group_bills.php">Group bills</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">
@@ -74,9 +74,15 @@
 			<?php if(isset($_SESSION['username'])): ?>
 			<h2>Please edit the bill</h2><br>
 			
+			<!-- After deleting or editing a bill -->
+			<?php if(isset($_SESSION['success'])):
+				echo "<p class='alert alert-success'>".$_SESSION['success']."</p>";
+				unset($_SESSION['success']);
+			endif ?>
+			
 			<?php
 				// search target bill
-				$bill_id = $_POST["id"];
+				$bill_id = $_POST["bill_id"];
 				$query = "SELECT * FROM `racun` WHERE id='$bill_id'";
 				$result = $connection->query($query);
 				
@@ -124,10 +130,10 @@
 							echo "<td><input class='form-control' type='text' name='description' value='".$row['opis']."'></td></tr>";
 							
 							//hidden input type
-							echo "<tr><td><input type='hidden' name='bill_id' value=".$bill_id.">";
+							echo "<tr><td colspan='2'><input type='hidden' name='bill_id' value=".$bill_id.">";
 							echo "<input class='btn btn-lg btn-primary' type='submit' name='edit_bill' value='Edit'></td>";
-							echo "<td><a class='btn btn-lg btn-default' href='show_bill.php'>Back</a></td></tr>";
-						echo "</tr></table></form>";
+							echo "</tr>";
+						echo "</table></form>";
 					}
 				}	
 			?>	

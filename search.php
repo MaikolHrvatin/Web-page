@@ -17,11 +17,27 @@
 	$max_val = isset($_GET['max_val']) ? $_GET['max_val'] : '';
 	$min_val = isset($_GET['min_val']) ? $_GET['min_val'] : '';
 	$currency = isset($_GET['currency']) ? $_GET['currency'] : '';
+	$group_id = isset($_GET['group_id']) ? $_GET['group_id'] : '';
 	
 	// making sql query and link to new page
 	$link = "";
-	$query_count = "SELECT COUNT(*) FROM `racun` WHERE id_user='$user_id' AND (`opis` LIKE '%".$search_term."%' OR `kategorija` LIKE '%".$search_term."%') AND grupa_id IS NULL";
-	$query_search = "SELECT * FROM `racun` WHERE id_user='$user_id' AND (`opis` LIKE '%".$search_term."%' OR `kategorija` LIKE '%".$search_term."%') AND grupa_id IS NULL";
+	$query_count = "SELECT COUNT(*) FROM `racun`";
+	$query_search = "SELECT * FROM `racun`";
+	
+	// checking if group bills
+	if(!empty($_GET['group_id'])){
+		// if group bills
+		$link = $link."&group_id=".$group_id;
+		$query_count = $query_count." WHERE grupa_id='".$group_id."'";
+		$query_search = $query_search." WHERE grupa_id='".$group_id."'";
+	}else{
+		//if private bills
+		$query_count = $query_count." WHERE id_user='$user_id' AND grupa_id IS NULL";
+		$query_search = $query_search." WHERE id_user='$user_id' AND grupa_id IS NULL";
+	}
+	// adding search term
+	$query_count = $query_count." AND (`opis` LIKE '%".$search_term."%' OR `kategorija` LIKE '%".$search_term."%')";
+	$query_search = $query_search." AND (`opis` LIKE '%".$search_term."%' OR `kategorija` LIKE '%".$search_term."%')";
 	
 	if(!empty($_GET['term'])){
 		$link = $link."&term=".$search_term;
@@ -110,20 +126,33 @@
 			echo "<td>".$row["kategorija"]."</td>";
 			echo "<td>".$row["datum"]."</td>";
 			echo "<td>".$row["opis"]."</td>";
-			// edit bill
-			echo "<td>";
-			echo "<form method='post' action='edit_bill.php'>";
-			echo "<input type='hidden' name='id' value=".$row['id'].">";
-			echo "<input type='submit' name='edit_b' class='btn' value='Edit'>";
-			echo "</form>";
-			echo "</td>";
-			// delete bill
-			echo "<td>";
-			echo "<form method='post' action='delete_bill.php'>";
-			echo "<input type='hidden' name='id' value=".$row['id'].">";
-			echo "<input type='submit' name='delete_b' class='btn' value='Delete'>";
-			echo "</form>";
-			echo "</td></tr>";
+			
+			//if the user made the bill give him the option to edit
+			if($row['id_user'] == $user_id){
+				// edit bill
+				echo "<td>";
+				echo "<form method='post' action='edit_bill.php'>";
+				echo "<input type='hidden' name='bill_id' value=".$row['id'].">";
+				echo "<input type='submit' name='edit_b' class='btn' value='Edit'>";
+				echo "</form>";
+				echo "</td>";
+				// delete bill
+				echo "<td>";
+				echo "<form method='post' action='delete_bill.php'>";
+				echo "<input type='hidden' name='id' value=".$row['id'].">";
+				echo "<input type='submit' name='delete_b' class='btn' value='Delete'>";
+				echo "</form>";
+				echo "</td>";
+			}else{
+				$query_username = "SELECT username FROM `user` INNER JOIN `racun` ON id_user=user.id WHERE racun.id=".$row['id'];
+				$result_username = $connection->query($query_username);
+				if($result_username->num_rows > 0){
+					while($row_username = $result_username->fetch_assoc()){
+						echo "<td colspan='2'>User: ".$row_username['username']."</td>";
+					}
+				}
+			}
+			echo "</tr>";
 		}
 	}
 	echo "</tbody>";

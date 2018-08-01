@@ -1,10 +1,9 @@
 <?php include('server.php'); ?>
-<?php include('edit_group_back.php'); ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Edit bill</title>
-	<!-- frontend for editing groups -->
+	<title>Edit bill categories</title>
+	<!-- frontend for editing and deleting groups -->
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,7 +23,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="">Finances</a>
+			<p class="navbar-brand">Finances</p>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
@@ -34,8 +33,8 @@
 					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Group finances <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="new_group.php">New group</a></li>
-						<li class="active"><a href="edit_groups.php">Edit groups</a></li>
-						<li><a href="group_bills.php">Group bills</a></li>
+						<li><a href="edit_groups.php">Edit groups</a></li>
+						<li class="active"><a href="group_bills.php">Group bills</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">
@@ -59,7 +58,7 @@
 					<li class="active"><a href="logout.php">Logout</a></li>
 				<!-- Not logged user, go to register/login -->
 				<?php else:?>	
-					<li class="active"><a href="login.php">Login</a></li>
+					<li><a href="login.php">Login</a></li>
 					<li><a href="register.php">Register</a></li>
 				<?php endif ?>
 			</ul>
@@ -72,44 +71,45 @@
 		
 			<!-- Logged user -->
 			<?php if(isset($_SESSION['username'])): ?>
-			<h2>Please edit your group</h2><br>
-			
-			<!-- validation errors -->
-			<?php include('validators.php'); ?>
-			
-			<!-- After deleting or editing a group -->
-			<?php if(isset($_SESSION['success'])):
-				echo "<p class='alert alert-success'>".$_SESSION['success']."</p>";
-				unset($_SESSION['success']);
-			endif ?>
+			<h2>Please choose a group</h2><br>
 			
 			<?php
-				// search target bill
-				$group_id = $_POST["group_id"];
-				$query = "SELECT * FROM `grupe` WHERE id='$group_id'";
-				$result = $connection->query($query);
-				
-				if($result->num_rows == 1){
-					while($row = $result->fetch_assoc()){
-						echo "<form method='post' action='edit_group.php'>";
-						echo "<table class='table table-condensed'>";
-							echo "<tr><td><label for='name'>Name</label></td>";
-							echo "<td><input class='form-control' type='text' name='name' value=".$row['ime']." required></td></tr>";
-	
-							echo "<tr><td><label for='date'>Date created</label></td>";
-							echo "<td><label for='date'>".$row['date_start']."</label></td></tr>";
-							
-							echo "<tr><td><label for='info'>Description</label></td>";
-							echo "<td><input class='form-control' type='text' name='info' value='".$row['info']."' required></td></tr>";
-							
-							//hidden input type
-							echo "<tr><td><input type='hidden' name='group_id' value=".$group_id.">";
-							echo "<input class='btn btn-lg btn-primary' type='submit' name='edit_group' value='Edit'></td>";
-							echo "<td><a href='edit_groups.php' class='btn btn-lg btn-default'>Back</a></td></tr>";
-						echo "</tr></table></form>";
+				// groups where admin
+				echo "<h3>Groups where administrator</h3>";
+				echo "<table class='table table-striped table-condensed'>";
+					$query = "SELECT * FROM `grupe` WHERE admin_id=".$_SESSION['user_id']."";
+					$result = $connection->query($query);
+					if($result->num_rows > 0){
+						while($row = $result->fetch_assoc()){
+							echo "<tr>";
+								echo "<td><label for=".$row['ime'].">".$row['ime']."</label></td>";
+								echo "<td><label for=".$row['date_start'].">".$row['date_start']."</label></td>";
+								
+								// show bills
+								echo "<td><a class='btn btn-lg btn-primary' href='show_group_bills.php?group_id=".$row['id']."'>Show bills</a></td>";
+							echo "</tr>";
+						}
 					}
-				}
-			?>	
+				echo "</table>";
+				
+				// other groups
+				echo "<h3>Other groups</h3>";
+				echo "<table class='table table-striped table-condensed'>";
+					$query = "SELECT grupe.ime, grupe.id, date_start FROM `grupe` INNER JOIN `user_grupe` ON grupe.id=id_grupa INNER JOIN `user` ON user.id=id_user WHERE user.id=".$_SESSION['user_id'].""; //tu stao
+					$result = $connection->query($query);
+					if($result->num_rows > 0){
+						while($row = $result->fetch_assoc()){
+							echo "<tr>";
+								echo "<td><label for=".$row['ime'].">".$row['ime']."</label></td>";
+								echo "<td><label for=".$row['date_start'].">".$row['date_start']."</label></td>";
+								
+								// show bills
+								echo "<td><a class='btn btn-lg btn-primary' href='show_group_bills.php?group_id=".$row['id']."'>Show bills</a></td>";
+							echo "</tr>";
+						}
+					}
+				echo "</table>";
+			?>
 				
 			<?php else:?>	
 			<!-- Not logged user, go to register/login -->
@@ -117,6 +117,6 @@
 			<?php endif ?>
 		</div>
 	</div>
-	
+		
 </body>
 </html>

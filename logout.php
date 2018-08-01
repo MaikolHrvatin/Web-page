@@ -35,7 +35,7 @@
 					<ul class="dropdown-menu">
 						<li><a href="new_group.php">New group</a></li>
 						<li><a href="edit_groups.php">Edit groups</a></li>
-						<li><a href="">Group bills</a></li>
+						<li><a href="group_bills.php">Group bills</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">
@@ -83,6 +83,7 @@
 		
 			<!-- Logout button -->
 			<a class='btn btn-lg btn-primary' href="logout.php?logout='1'">Logout</a>
+			<button class='btn btn-lg btn-default' onclick='window.history.go(-1); return false;'>Back</button>
 				
 			<?php else:?>	
 			<!-- Not logged user, go to register/login -->

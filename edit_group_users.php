@@ -36,7 +36,7 @@
 					<ul class="dropdown-menu">
 						<li><a href="new_group.php">New group</a></li>
 						<li class="active"><a href="edit_groups.php">Edit groups</a></li>
-						<li><a href="">Group bills</a></li>
+						<li><a href="group_bills.php">Group bills</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">
@@ -75,7 +75,7 @@
 			<?php if(isset($_SESSION['username'])): ?>
 			
 			<?php
-				$group_id = $_POST["id"];
+				$group_id = $_POST["group_id"];
 				$query = "SELECT * FROM `grupe` WHERE id='$group_id'";
 				$result = $connection->query($query);
 				
@@ -90,6 +90,12 @@
 			
 			<!-- validation errors -->
 			<?php include('validators.php'); ?>
+			
+			<!-- After deleting or editing a group -->
+			<?php if(isset($_SESSION['success'])):
+				echo "<p class='alert alert-success'>".$_SESSION['success']."</p>";
+				unset($_SESSION['success']);
+			endif ?>
 			
 			<?php
 				$query_admin = "SELECT * FROM `grupe` WHERE id='$group_id'";
@@ -162,7 +168,7 @@
 						echo "</table>";
 					}
 					
-					echo "<a class='btn btn-lg btn-default' href='edit_groups.php'>Back</a>";
+					echo "<a href='edit_groups.php' class='btn btn-lg btn-default'>Back</a>";
 				} ?>
 				
 			<?php else:?>	

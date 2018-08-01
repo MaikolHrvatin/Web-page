@@ -13,6 +13,10 @@
 	$query = "DELETE FROM `user_grupe` WHERE id_grupa='$group_id'";
 	mysqli_query($connection, $query);
 	
+	// deleting bills
+	$query = "DELETE FROM `racun` WHERE grupa_id='$group_id'";
+	mysqli_query($connection, $query);
+	
 	// deleting group
 	$query = "DELETE FROM `grupe` WHERE id='$group_id'";
 	mysqli_query($connection, $query);

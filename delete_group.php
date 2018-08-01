@@ -34,7 +34,7 @@
 					<ul class="dropdown-menu">
 						<li><a href="new_group.php">New group</a></li>
 						<li class="active"><a href="edit_groups.php">Edit groups</a></li>
-						<li><a href="">Group bills</a></li>
+						<li><a href="group_bills.php">Group bills</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">
@@ -85,7 +85,7 @@
 						echo "Date: ".$row["date_start"]."<br>";
 						echo "Info: ".$row["info"]."</p>";
 						echo "<a class='btn btn-lg btn-primary' href='delete_group_back.php?id=".$group_id."'>Delete</a>"." ";
-						echo "<a class='btn btn-lg btn-default' href='edit_groups.php'>Back</a>";
+						echo "<td><button class='btn btn-lg btn-default' onclick='window.history.go(-1); return false;'>Back</button></td></tr>";
 					}
 				}
 			?>	
