@@ -30,7 +30,7 @@
 		}
 		
 		// search if member is already in the group
-		$query = "SELECT user_id FROM `user_grupe` WHERE id_user='$user_id' AND id_grupa='$group_id'";
+		$query = "SELECT * FROM `user_grupe` WHERE id_user='$user_id' AND id_grupa='$group_id'";
 		$result = $connection->query($query);
 		if($result->num_rows > 0){
 			array_push($errors, "User is already in the group");
