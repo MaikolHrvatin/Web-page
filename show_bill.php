@@ -83,7 +83,7 @@
 			<p>Search form</p>
 			<form name='search_form' action='show_bill.php' method='GET'>
 				<!-- If empty page number is one -->
-				<input type='hidden' name='page_no' value=<?php echo isset($_GET['page_no']) ? $_GET['page_no'] : 1; ?>>
+				<input type='hidden' name='page_no' value=1>
 				<!-- After _get text in input is saved -->
 				<input type='text' name='term' class="form-control" placeholder="Input search term" value="<?php if(!empty($_GET['term'])) {echo $_GET['term'];} ?>">
 				
