@@ -39,7 +39,7 @@
 			$query = "INSERT INTO `racun` (iznos, valuta, datum, kategorija, opis, vrsta, id_user, grupa_id) VALUES ('$price', '$currency', '$date', '$category', '$description', '$type', '$user_id', $group)";
 			mysqli_query($connection, $query);
 			
-			$_SESSION['success'] = $query."The bill was created successfully";
+			$_SESSION['success'] = "The bill was created successfully";
 			//old path after success
 			//header('location: show_bill.php');
 		}
